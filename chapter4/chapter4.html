@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>倾向性匹配得分在R语言中实现</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>倾向性匹配得分在R语言中实现</h1>
+
+<p>Xianxiong Ma</p>
+
+<p>2020年3月14日</p>
+
+<h4>PSM定义</h4>
+
+<ul>
+<li>通过一定的统计学方法对试验组与对照组进行筛选，使筛选出来的研究对象在某些重要临床特征(潜在的混杂因素)上 具有可比性。</li>
+<li>一般是通过某种统计学模型求得 每个观测的多个协变量的综合倾向性得分，再按照倾向性得分是否接近进行匹配。</li>
+<li>最常用的统计模型一般是以分组变量为因变量，其他可能影响结果的混杂因素为协变量构建Logistic回归模型。</li>
+<li>计算每个观测的倾向得分，按照得分大小进行匹配。</li>
+</ul>
+
+<h4>举个例子:</h4>
+
+<ul>
+<li>比如替某大龄女孩找对象，该女孩列出以下3个条件: 1. 年龄要与自己相差不大(士2岁) ;2.民族与自己一致;3.学历与自己-致。</li>
+<li>那么如果是经典的匹配方法，首先是按照这些条件删选男生，然后在符合条件的男生中随权抽取一个男孩介绍给这个女孩。</li>
+<li>如果是PSM呢，首先给出一个评分方法，比如总分=0.8*年龄+2.3*民族+1.6*学历，然后对该女孩和众多男孩分别求得分，找出一个得分与该女孩最为接近的男孩，介绍他们认识。</li>
+<li>如果得分接近的有很多怎么办?选择多个还是选择一个?这是一个问题!</li>
+</ul>
+
+<h2>MatchIt包</h2>
+
+<p>案例：所示数据中共有10个变量，614个观测，实验组185例，对照组429例。treat变量即为分组变量，&quot;1&quot;=实验组（接受职业培训），&quot;0&quot;=对照组（未接受职业培训）。age, educ, black, hispan, married, nodegree, re74, re75为协变量，re78为结局变量（年总收入）。事实上，倾向性匹配得分分析是要建立一个以分组变量（treat）为因变量，各个协变量（age, educ, black, hispan, married, nodegree, re74, re75)为自变量的回归方程。而结局变量（re78）在PSM过程中几乎不参与建模。</p>
+
+<pre><code class="r">library(MatchIt)
+data(lalonde)
+head(lalonde)
+</code></pre>
+
+<pre><code>##      treat age educ black hispan married nodegree re74 re75       re78
+## NSW1     1  37   11     1      0       1        1    0    0  9930.0460
+## NSW2     1  22    9     0      1       0        1    0    0  3595.8940
+## NSW3     1  30   12     1      0       0        0    0    0 24909.4500
+## NSW4     1  27   11     1      0       0        1    0    0  7506.1460
+## NSW5     1  33    8     1      0       0        1    0    0   289.7899
+## NSW6     1  22    9     1      0       0        1    0    0  4056.4940
+</code></pre>
+
+<pre><code class="r">f = matchit(treat ~ re74 + re75 + educ + black + hispan + age + married + nodegree, 
+    data = lalonde, method = &quot;nearest&quot;)
+# f1=matchit(treat~re74+re75+educ+black+hispan+age+married+nodegree,data=lalonde,method=&#39;nearest&#39;,caliper=0.05)
+# 设置卡钳值越大似乎更严谨，得到的结果更少
+summary(f)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## matchit(formula = treat ~ re74 + re75 + educ + black + hispan + 
+##     age + married + nodegree, data = lalonde, method = &quot;nearest&quot;)
+## 
+## Summary of balance for all data:
+##          Means Treated Means Control SD Control  Mean Diff   eQQ Med
+## distance        0.5774        0.1822     0.2295     0.3952    0.5176
+## re74         2095.5737     5619.2365  6788.7508 -3523.6628 2425.5720
+## re75         1532.0553     2466.4844  3291.9962  -934.4291  981.0968
+## educ           10.3459       10.2354     2.8552     0.1105    1.0000
+## black           0.8432        0.2028     0.4026     0.6404    1.0000
+## hispan          0.0595        0.1422     0.3497    -0.0827    0.0000
+## age            25.8162       28.0303    10.7867    -2.2141    1.0000
+## married         0.1892        0.5128     0.5004    -0.3236    0.0000
+## nodegree        0.7081        0.5967     0.4911     0.1114    0.0000
+##           eQQ Mean   eQQ Max
+## distance    0.3955    0.5966
+## re74     3620.9240 9216.5000
+## re75     1060.6582 6795.0100
+## educ        0.7027    4.0000
+## black       0.6432    1.0000
+## hispan      0.0811    1.0000
+## age         3.2649   10.0000
+## married     0.3243    1.0000
+## nodegree    0.1135    1.0000
+## 
+## 
+## Summary of balance for matched data:
+##          Means Treated Means Control SD Control Mean Diff  eQQ Med eQQ Mean
+## distance        0.5774        0.3629     0.2533    0.2145   0.1646   0.2146
+## re74         2095.5737     2342.1076  4238.9757 -246.5339 131.2709 545.1182
+## re75         1532.0553     1614.7451  2632.3533  -82.6898 152.1774 349.5371
+## educ           10.3459       10.6054     2.6582   -0.2595   0.0000   0.4541
+## black           0.8432        0.4703     0.5005    0.3730   0.0000   0.3730
+## hispan          0.0595        0.2162     0.4128   -0.1568   0.0000   0.1568
+## age            25.8162       25.3027    10.5864    0.5135   3.0000   3.3892
+## married         0.1892        0.2108     0.4090   -0.0216   0.0000   0.0216
+## nodegree        0.7081        0.6378     0.4819    0.0703   0.0000   0.0703
+##             eQQ Max
+## distance     0.4492
+## re74     13121.7500
+## re75     11365.7100
+## educ         3.0000
+## black        1.0000
+## hispan       1.0000
+## age          9.0000
+## married      1.0000
+## nodegree     1.0000
+## 
+## Percent Balance Improvement:
+##          Mean Diff.   eQQ Med eQQ Mean  eQQ Max
+## distance    45.7140   68.1921  45.7536  24.7011
+## re74        93.0035   94.5880  84.9453 -42.3724
+## re75        91.1508   84.4891  67.0453 -67.2655
+## educ      -134.7737  100.0000  35.3846  25.0000
+## black       41.7636  100.0000  42.0168   0.0000
+## hispan     -89.4761    0.0000 -93.3333   0.0000
+## age         76.8070 -200.0000  -3.8079  10.0000
+## married     93.3191    0.0000  93.3333   0.0000
+## nodegree    36.9046    0.0000  38.0952   0.0000
+## 
+## Sample sizes:
+##           Control Treated
+## All           429     185
+## Matched       185     185
+## Unmatched     244       0
+## Discarded       0       0
+</code></pre>
+
+<pre><code class="r">matchdata = match.data(f)
+matchdata
+</code></pre>
+
+<pre><code>##       treat age educ black hispan married nodegree re74 re75       re78
+## NSW1      1  37   11     1      0       1        1    0    0  9930.0460
+## NSW2      1  22    9     0      1       0        1    0    0  3595.8940
+## NSW3      1  30   12     1      0       0        0    0    0 24909.4500
+## NSW4      1  27   11     1      0       0        1    0    0  7506.1460
+## NSW5      1  33    8     1      0       0        1    0    0   289.7899
+## NSW6      1  22    9     1      0       0        1    0    0  4056.4940
+## NSW7      1  23   12     1      0       0        0    0    0     0.0000
+## NSW8      1  32   11     1      0       0        1    0    0  8472.1580
+## NSW9      1  22   16     1      0       0        0    0    0  2164.0220
+## NSW10     1  33   12     0      0       1        0    0    0 12418.0700
+## NSW11     1  19    9     1      0       0        1    0    0  8173.9080
+## NSW12     1  21   13     1      0       0        0    0    0 17094.6400
+## NSW13     1  18    8     1      0       0        1    0    0     0.0000
+## NSW14     1  27   10     1      0       1        1    0    0 18739.9300
+## NSW15     1  17    7     1      0       0        1    0    0  3023.8790
+## NSW16     1  19   10     1      0       0        1    0    0  3228.5030
+## NSW17     1  27   13     1      0       0        0    0    0 14581.8600
+## NSW18     1  23   10     1      0       0        1    0    0  7693.4000
+## NSW19     1  40   12     1      0       0        0    0    0 10804.3200
+## NSW20     1  26   12     1      0       0        0    0    0 10747.3500
+## NSW21     1  23   11     1      0       0        1    0    0     0.0000
+## NSW22     1  41   14     0      0       0        0    0    0  5149.5010
+## NSW23     1  38    9     0      0       0        1    0    0  6408.9500
+## NSW24     1  24   11     1      0       0        1    0    0  1991.4000
+## NSW25     1  18   10     1      0       0        1    0    0 11163.1700
+## NSW26     1  29   11     1      0       1        1    0    0  9642.9990
+## NSW27     1  25   11     1      0       0        1    0    0  9897.0490
+## NSW28     1  27   10     0      1       0        1    0    0 11142.8700
+## NSW29     1  17   10     1      0       0        1    0    0 16218.0400
+## NSW30     1  24   11     1      0       0        1    0    0   995.7002
+## NSW31     1  17   10     1      0       0        1    0    0     0.0000
+## NSW32     1  48    4     1      0       0        1    0    0  6551.5920
+## NSW33     1  25   11     1      0       1        1    0    0  1574.4240
+## NSW34     1  20   12     1      0       0        0    0    0     0.0000
+## NSW35     1  25   12     1      0       0        0    0    0  3191.7530
+## NSW36     1  42   14     1      0       0        0    0    0 20505.9300
+## NSW37     1  25    5     1      0       0        1    0    0  6181.8800
+## NSW38     1  23   12     1      0       1        0    0    0  5911.5510
+## NSW39     1  46    8     1      0       1        1    0    0  3094.1560
+## NSW40     1  24   10     1      0       0        1    0    0     0.0000
+## NSW41     1  21   12     1      0       0        0    0    0  1254.5820
+## NSW42     1  19    9     0      0       0        1    0    0 13188.8300
+## NSW43     1  17    8     1      0       0        1    0    0  8061.4850
+## NSW44     1  18    8     0      1       1        1    0    0  2787.9600
+## NSW45     1  20   11     1      0       0        1    0    0  3972.5400
+## NSW46     1  25   11     1      0       1        1    0    0     0.0000
+## NSW47     1  17    8     1      0       0        1    0    0     0.0000
+## NSW48     1  17    9     1      0       0        1    0    0     0.0000
+## NSW49     1  25    5     1      0       0        1    0    0 12187.4100
+## NSW50     1  23   12     1      0       0        0    0    0  4843.1760
+## NSW51     1  28    8     1      0       0        1    0    0     0.0000
+## NSW52     1  31   11     1      0       1        1    0    0  8087.4870
+## NSW53     1  18   11     1      0       0        1    0    0     0.0000
+## NSW54     1  25   12     1      0       0        0    0    0  2348.9730
+## NSW55     1  30   11     1      0       1        1    0    0   590.7818
+## NSW56     1  17   10     1      0       0        1    0    0     0.0000
+## NSW57     1  37    9     1      0       0        1    0    0  1067.5060
+## NSW58     1  41    4     1      0       1        1    0    0  7284.9860
+## NSW59     1  42   14     1      0       1        0    0    0 13167.5200
+## NSW60     1  22   11     0      0       0        1    0    0  1048.4320
+## NSW61     1  17    8     1      0       0        1    0    0     0.0000
+## NSW62     1  29    8     1      0       0        1    0    0  1923.9380
+## NSW63     1  35   10     1      0       0        1    0    0  4666.2360
+## NSW64     1  27   11     1      0       0        1    0    0   549.2984
+## NSW65     1  29    4     1      0       0        1    0    0   762.9146
+## NSW66     1  28    9     1      0       0        1    0    0 10694.2900
+## NSW67     1  27   11     1      0       0        1    0    0     0.0000
+## NSW68     1  23    7     0      0       0        1    0    0     0.0000
+## NSW69     1  45    5     1      0       1        1    0    0  8546.7150
+## NSW70     1  29   13     1      0       0        0    0    0  7479.6560
+## NSW71     1  27    9     1      0       0        1    0    0     0.0000
+## NSW72     1  46   13     1      0       0        0    0    0   647.2046
+## NSW73     1  18    6     1      0       0        1    0    0     0.0000
+## NSW74     1  25   12     1      0       0        0    0    0 11965.8100
+## NSW75     1  28   15     1      0       0        0    0    0  9598.5410
+## NSW76     1  25   11     0      0       0        1    0    0 18783.3500
+## NSW77     1  22   12     1      0       0        0    0    0 18678.0800
+## NSW78     1  21    9     1      0       0        1    0    0     0.0000
+## NSW79     1  40   11     1      0       0        1    0    0 23005.6000
+## NSW80     1  22   11     1      0       0        1    0    0  6456.6970
+## NSW81     1  25   12     1      0       0        0    0    0     0.0000
+## NSW82     1  18   12     1      0       0        0    0    0  2321.1070
+## NSW83     1  38   12     0      0       0        0    0    0  4941.8490
+##         distance weights
+## NSW1  0.63876993       1
+## NSW2  0.22463424       1
+## NSW3  0.67824388       1
+## NSW4  0.77632408       1
+## NSW5  0.70163874       1
+## NSW6  0.69906990       1
+## NSW7  0.65368426       1
+## NSW8  0.78972311       1
+## NSW9  0.77983825       1
+## NSW10 0.04292461       1
+## NSW11 0.68901996       1
+## NSW12 0.68244400       1
+## NSW13 0.64986767       1
+## NSW14 0.56241073       1
+## NSW15 0.60858629       1
+## NSW16 0.72249036       1
+## NSW17 0.70259562       1
+## NSW18 0.73496416       1
+## NSW19 0.71166489       1
+## NSW20 0.66431981       1
+## NSW21 0.76517492       1
+## NSW22 0.13901525       1
+## NSW23 0.12238224       1
+## NSW24 0.76799791       1
+## NSW25 0.71931601       1
+## NSW26 0.60916715       1
+## NSW27 0.77079713       1
+## NSW28 0.26920316       1
+## NSW29 0.71611962       1
+## NSW30 0.76799791       1
+## NSW31 0.71611962       1
+## NSW32 0.60981680       1
+## NSW33 0.59404299       1
+## NSW34 0.64289289       1
+## NSW35 0.66079247       1
+## NSW36 0.77862159       1
+## NSW37 0.56093965       1
+## NSW38 0.45094835       1
+## NSW39 0.55677960       1
+## NSW40 0.73802599       1
+## NSW41 0.64650679       1
+## NSW42 0.09365296       1
+## NSW43 0.64626932       1
+## NSW44 0.09150550       1
+## NSW45 0.75656387       1
+## NSW46 0.59404299       1
+## NSW47 0.64626932       1
+## NSW48 0.68221881       1
+## NSW49 0.56093965       1
+## NSW50 0.65368426       1
+## NSW51 0.68486666       1
+## NSW52 0.61665323       1
+## NSW53 0.75070545       1
+## NSW54 0.66079247       1
+## NSW55 0.61291686       1
+## NSW56 0.71611962       1
+## NSW57 0.74640480       1
+## NSW58 0.37847866       1
+## NSW59 0.60480778       1
+## NSW60 0.13012192       1
+## NSW61 0.64626932       1
+## NSW62 0.68826176       1
+## NSW63 0.77017180       1
+## NSW64 0.77632408       1
+## NSW65 0.53662873       1
+## NSW66 0.71860150       1
+## NSW67 0.77632408       1
+## NSW68 0.07382733       1
+## NSW69 0.43251547       1
+## NSW70 0.70914659       1
+## NSW71 0.71540019       1
+## NSW72 0.76123332       1
+## NSW73 0.57342619       1
+## NSW74 0.66079247       1
+## NSW75 0.76818297       1
+## NSW76 0.13557377       1
+## NSW77 0.65010402       1
+## NSW78 0.69574047       1
+## NSW79 0.80991743       1
+## NSW80 0.76232821       1
+## NSW81 0.66079247       1
+## NSW82 0.63561643       1
+## NSW83 0.10034130       1
+##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 287 rows ]
+</code></pre>
+
+<pre><code class="r">library(foreign)
+matchdata$id &lt;- 1:nrow(matchdata)
+write.csv(matchdata, &quot;matchdata.csv&quot;)
+</code></pre>
+
+<h2>nonrandom包</h2>
+
+<pre><code class="r">library(nonrandom)
+data(stu1)
+dim(stu1)
+</code></pre>
+
+<pre><code>## [1] 646   9
+</code></pre>
+
+<pre><code class="r">head(stu1)
+</code></pre>
+
+<pre><code>##   klinik idnr tmass therapie alter tgr age      ewb   pst
+## 1      3  782     6        1    42   1   1 63.46154 81.25
+## 2      3  975     9        1    49   1   1 90.38462 93.75
+## 3      4  448    10        1    39   1   1 73.07692 93.75
+## 4      6  835     6        1    53   1   1 75.00000 81.25
+## 5      6  866    10        1    52   1   1 34.61538 56.25
+## 6      6  953    10        1    51   1   1 63.46154 93.75
+</code></pre>
+
+<p><strong><em>klinik</em></strong> : clinic center</p>
+
+<p><strong><em>idnr</em></strong> : patient id</p>
+
+<p><strong><em>tmass</em></strong> : tumor size in mm</p>
+
+<p><strong><em>alter</em></strong> : age</p>
+
+<p><strong><em>therapie</em></strong> : therapy: 1:mastectomy;    2:breast conservation</p>
+
+<p><strong><em>tgr</em></strong> : tumor size: 1: &lt;= 10 mm;     2: &gt; 10 mm</p>
+
+<p><strong><em>age</em></strong> : 1:&lt;= 55 yrs;    2: &gt; 55 yrs</p>
+
+<p><strong><em>ewb</em></strong> : emotional status</p>
+
+<p><strong><em>pst</em></strong>: physical status</p>
+
+<pre><code class="r">stu1.ps &lt;- pscore(data = stu1, 
+                  formula = therapie~tgr+age) #匹配肿瘤大小和年龄
+stu1.match &lt;- ps.match(object = stu1.ps,
+                       ratio  = 2,  # 不宜设置过大，越大越难匹配
+                       caliper = 0.05,  # 不宜设置过大，越大越难匹配
+                       givenTmatchingC = FALSE,
+                       matched.by = &quot;pscore&quot;,
+                       setseed = 38902,
+                       combine.output=TRUE)
+matchdata&lt;- stu1.match$data.matched
+matchdata
+</code></pre>
+
+<pre><code>##     klinik idnr tmass therapie alter tgr age      ewb    pst    pscore
+## 1        3  782     6        1    42   1   1 63.46154  81.25 0.8832166
+## 2        3  975     9        1    49   1   1 90.38462  93.75 0.8832166
+## 3        4  448    10        1    39   1   1 73.07692  93.75 0.8832166
+## 4        6  835     6        1    53   1   1 75.00000  81.25 0.8832166
+## 5        6  866    10        1    52   1   1 34.61538  56.25 0.8832166
+## 6        6  953    10        1    51   1   1 63.46154  93.75 0.8832166
+## 7        7  555     7        1    46   1   1 76.92308  81.25 0.8832166
+## 8        7  592     7        1    53   1   1 48.07692  75.00 0.8832166
+## 9        7  613     9        1    44   1   1 69.23077  81.25 0.8832166
+## 10       7  666     6        1    46   1   1 55.76923  62.50 0.8832166
+## 11       8  183     8        1    41   1   1 61.53846  87.50 0.8832166
+## 12      10   18     7        1    55   1   1 78.84615  93.75 0.8832166
+## 13      10   45     9        1    45   1   1 75.00000  81.25 0.8832166
+## 14      10  107     8        1    42   1   1 69.23077  81.25 0.8832166
+## 15      11  514     8        0    47   1   1 75.00000 100.00 0.8832166
+## 18      15  188    10        0    43   1   1 92.30769 100.00 0.8832166
+## 19      16  505    10        0    36   1   1 75.00000  93.75 0.8832166
+## 46      38   19     8        0    51   1   1 51.92308  81.25 0.8832166
+## 60      40 1029     5        0    40   1   1 63.46154  75.00 0.8832166
+## 61      40 1048     7        0    49   1   1 65.38462 100.00 0.8832166
+## 76      63  226     7        0    55   1   1 55.76923  68.75 0.8832166
+## 96       2  321    18        1    48   2   1 75.00000  93.75 0.8238997
+## 97       2  363    14        0    50   2   1 72.91667  81.25 0.8238997
+## 98       2  373    13        1    47   2   1 38.46154  68.75 0.8238997
+## 99       2  648    12        1    39   2   1 54.16667  62.50 0.8238997
+## 100      2  813    15        0    50   2   1 65.38462 100.00 0.8238997
+## 101      4   26    13        1    32   2   1 79.16667  81.25 0.8238997
+## 102      4   79    15        1    33   2   1 69.23077  93.75 0.8238997
+## 103      4   94    15        1    50   2   1 67.30769  81.25 0.8238997
+## 104      4  354    18        1    49   2   1 65.38462  87.50 0.8238997
+## 105      4  378    18        1    38   2   1 67.30769  93.75 0.8238997
+## 106      4  418    15        1    45   2   1 71.15385  87.50 0.8238997
+## 107      4  816    15        1    38   2   1 82.69231 100.00 0.8238997
+## 108      4  896    19        1    33   2   1 67.30769  81.25 0.8238997
+## 109      4  915    12        1    35   2   1 78.84615  87.50 0.8238997
+## 110      4  935    15        0    44   2   1 53.84615  68.75 0.8238997
+## 111      6  228    12        1    46   2   1 65.38462  75.00 0.8238997
+## 112      6  271    15        1    30   2   1 65.38462  62.50 0.8238997
+## 113      6  750    19        1    45   2   1 51.92308  62.50 0.8238997
+## 114      6  836    16        1    53   2   1 71.15385  75.00 0.8238997
+## 115      6  961    13        1    46   2   1 78.84615  81.25 0.8238997
+## 116      6  966    15        1    54   2   1 73.07692  87.50 0.8238997
+## 117      6 1013    11        1    48   2   1 65.38462  87.50 0.8238997
+## 118      7  415    15        1    48   2   1 60.41667  81.25 0.8238997
+## 119      7  491    13        1    34   2   1 46.15385  68.75 0.8238997
+## 120      7  524    17        1    49   2   1 51.92308  68.75 0.8238997
+## 121      7  567    12        1    37   2   1 76.92308  87.50 0.8238997
+## 122      7  572    13        1    52   2   1 64.58333  81.25 0.8238997
+## 123      7  705    12        1    48   2   1 83.33333 100.00 0.8238997
+## 124      7  759    16        1    48   2   1 34.61538  56.25 0.8238997
+## 125      7  781    15        1    39   2   1 47.91667  62.50 0.8238997
+## 126      7  811    16        1    41   2   1 57.69231  81.25 0.8238997
+## 127      7 1015    15        1    53   2   1 59.61538  81.25 0.8238997
+## 128      8   65    13        0    54   2   1 40.90909  68.75 0.8238997
+## 129      8  127    13        1    45   2   1 34.61538  50.00 0.8238997
+## 130      8  133    18        1    41   2   1 82.69231  81.25 0.8238997
+## 131     10   89    14        1    45   2   1 90.38462 100.00 0.8238997
+## 132     10  339    17        1    55   2   1 76.92308  81.25 0.8238997
+## 133     10 1009    18        1    33   2   1 42.30769  56.25 0.8238997
+## 134     11  348    12        1    35   2   1 46.15385  56.25 0.8238997
+## 135     11  993    13        0    47   2   1 76.92308  81.25 0.8238997
+## 136     11 1105    13        0    55   2   1 82.69231  93.75 0.8238997
+## 137     11 1110    15        0    49   2   1 65.38462  75.00 0.8238997
+## 138     13   13    13        1    39   2   1 42.30769  62.50 0.8238997
+## 139     13  181    14        1    35   2   1 42.30769  75.00 0.8238997
+## 140     13  358    16        1    55   2   1 90.38462  93.75 0.8238997
+## 141     13  553    13        1    55   2   1 71.15385  87.50 0.8238997
+## 142     13  667    17        1    39   2   1 86.53846  93.75 0.8238997
+## 143     14  535    15        1    38   2   1 76.92308  87.50 0.8238997
+## 144     14  822    18        1    52   2   1 59.61538  68.75 0.8238997
+## 145     16  251    12        0    36   2   1 65.38462  68.75 0.8238997
+## 146     16  682    17        1    38   2   1 82.69231  93.75 0.8238997
+## 147     16  842    15        1    51   2   1 30.76923  75.00 0.8238997
+## 148     17   34    18        1    29   2   1 80.76923  93.75 0.8238997
+## 149     17  261    15        1    44   2   1 71.15385  87.50 0.8238997
+## 150     17  362    14        1    42   2   1 30.76923  56.25 0.8238997
+## 151     17  427    14        0    45   2   1 59.61538  68.75 0.8238997
+## 152     17  794    12        1    46   2   1 80.76923 100.00 0.8238997
+## 153     18  408    15        0    52   2   1 94.23077 100.00 0.8238997
+## 154     18  590    20        1    32   2   1 36.53846  81.25 0.8238997
+## 155     18  636    20        1    46   2   1 40.38462  68.75 0.8238997
+## 156     18  776    19        1    49   2   1 55.76923  75.00 0.8238997
+## 157     18  973    17        1    52   2   1 75.00000  75.00 0.8238997
+## 158     18 1094    12        1    51   2   1 59.61538  87.50 0.8238997
+## 159     18 1117    15        0    51   2   1 48.07692  50.00 0.8238997
+## 160     19  730    15        1    38   2   1 71.15385  81.25 0.8238997
+## 161     19  850    12        1    55   2   1 50.00000  62.50 0.8238997
+## 162     19 1091    13        1    50   2   1 67.30769  93.75 0.8238997
+## 163     20    1    11        1    42   2   1 69.23077  93.75 0.8238997
+## 164     20   20    12        1    47   2   1 61.53846  81.25 0.8238997
+##     match.index
+## 1             1
+## 2             1
+## 3             2
+## 4             2
+## 5             3
+## 6             3
+## 7             4
+## 8             4
+## 9             5
+## 10            5
+## 11            6
+## 12            6
+## 13            7
+## 14            7
+## 15            1
+## 18            2
+## 19            3
+## 46            4
+## 60            5
+## 61            6
+## 76            7
+## 96            8
+## 97            8
+## 98            8
+## 99            9
+## 100           9
+## 101           9
+## 102          10
+## 103          10
+## 104          11
+## 105          11
+## 106          12
+## 107          12
+## 108          13
+## 109          13
+## 110          10
+## 111          14
+## 112          14
+## 113          15
+## 114          15
+## 115          16
+## 116          16
+## 117          17
+## 118          17
+## 119          18
+## 120          18
+## 121          19
+## 122          19
+## 123          20
+## 124          20
+## 125          21
+## 126          21
+## 127          22
+## 128          11
+## 129          22
+## 130          23
+## 131          23
+## 132          24
+## 133          24
+## 134          25
+## 135          12
+## 136          13
+## 137          14
+## 138          25
+## 139          26
+## 140          26
+## 141          27
+## 142          27
+## 143          28
+## 144          28
+## 145          15
+## 146          29
+## 147          29
+## 148          30
+## 149          30
+## 150          31
+## 151          16
+## 152          31
+## 153          17
+## 154          32
+## 155          32
+## 156          33
+## 157          33
+## 158          34
+## 159          18
+## 160          34
+## 161          35
+## 162          35
+## 163          36
+## 164          36
+##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 356 rows ]
+</code></pre>
+
+<pre><code class="r">library(foreign)
+matchdata$id&lt;-1:nrow(matchdata)
+write.csv(matchdata,&quot;stu1matchdata.csv&quot;)
+
+
+data(stu1)
+stu1.ps &lt;- pscore(data = stu1, 
+                  formula = therapie~tgr+age)
+plot.pscore(x = stu1.ps,
+            main = &quot;PS distribution&quot;,
+            xlab = &quot;&quot;,
+            par.1=list(col=&quot;red&quot;),
+            par.0=list(lwd=2),
+            par.dens=list(kernel=&quot;gaussian&quot;))
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-3"/></p>
+
+<h4>有关PSM的几点思考</h4>
+
+<ul>
+<li>PSM的适用条件:</li>
+</ul>
+
+<p>对照组样本量足够大，对照组与试验组样本量之比5:1以上，确保绝大多数试验组对象可以匹配上合适的对照，最好所有试验组对象均得到良好匹配。</p>
+
+<ul>
+<li>PSM与回归的关系</li>
+</ul>
+
+<p>能用PSM的均可以用回归分析，可以用回归的未必可以用PSM,建议同时采用PSM与回归分析处理数据，当两者结果一致的时候说明结果较可信</p>
+
+</body>
+
+</html>

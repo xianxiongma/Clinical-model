@@ -1,0 +1,146 @@
+
+
+@media screen and (min-width: 1350px ){
+/*1350*/
+	.cover {
+	width: 30%;
+	height: 100vh;
+	background-color: blue;
+	margin-left: 10%;
+	position: fixed;
+	}
+
+	.cover_text1 {
+	color: white;
+	font-size: 2.5vw;
+	text-align: center;
+	/*line-height: 40vh;*/
+	font-weight: bold;
+	font-family: "Microsoft YaHei";
+	/*position: fixed;*/
+
+	}
+
+	.cover_text2 {
+		color: yellow;
+		font-size: 1.5vw;
+		text-align: right;
+		margin-right: 5vw;
+		line-height: 20vh;
+		font-weight: bold;
+		font-family: "Microsoft YaHei";
+	}
+
+	.cover_text3 {
+		font-size: 1.2vw;
+		line-height: 4vw;
+		text-align: center;
+		color: white;
+		font-family: "Microsoft YaHei";
+		font-weight: bold;
+	}
+
+	.cover_text4 {
+		font-size: 0.3vw;
+		color: white;
+		text-align: center;
+		padding-top: 58vh;
+	}
+
+	.chapters {
+		/*background-color: lightgray;*/
+		float: left;
+		/*height: 100vh;*/
+		/*width: 100vw;*/
+		margin-left: 42%;
+	}
+
+
+	h1 {
+		color: gray;
+		font-size: 1.5vw;
+		font-family: "Microsoft YaHei";
+
+	}
+
+	a:visited{
+		color: gray;
+		font-weight: normal;
+	}
+
+	a {
+		color: gray;
+		text-decoration: none;
+	}
+
+	.header_chapter {
+		color: #2F4F4F;
+		font-size: 1.7vw;
+	}
+
+
+}
+
+@media screen and (max-width: 1350px){
+	.cover {
+	/*width: 100%;*/
+	height: 100px;
+	background-color: blue;
+	margin-left: 10%;
+	margin-right: 10%;
+	}
+
+	.cover_text1 {
+	line-height: 100px;
+	color: white;
+	font-size: 40px;
+	text-align: center;
+	/*line-height: 40vh;*/
+	font-weight: bold;
+	font-family: "Microsoft YaHei";
+	/*position: fixed;*/
+
+	}
+	.cover_text2 {
+		display: none;
+	}
+	.cover_text3 {
+		display: none;
+	}
+	.cover_text4 {
+		display: none;
+	}
+	.chapters {
+		/*background-color: lightgray;*/
+		/*text-shadow: center;*/
+		float: left;
+		margin-left: 15%;
+		margin-right: 15%;
+	}
+
+
+	h1 {
+		color: gray;
+		font-size: 20px;
+		font-family: "Microsoft YaHei";
+
+	}
+
+	a:visited{
+		color: gray;
+		font-weight: normal;
+	}
+
+	a {
+		color: gray;
+		text-decoration: none;
+	}
+
+	.header_chapter {
+		/*text-align: center;*/
+		color: #2F4F4F;
+		font-size: 30px;
+	}
+}
+
+

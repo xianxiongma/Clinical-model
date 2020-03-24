@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>K最近邻与支持向量机在医学中应用</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>K最近邻与支持向量机在医学中应用</h1>
+
+<p>Xianxiong Ma</p>
+
+<p>2020年3月16日</p>
+
+<h2>KNN建模</h2>
+
+<h4>案例</h4>
+
+<p>数据集包含了532位女性患者的信息，存储在两个数据框中。数据集变量如下:</p>
+
+<ul>
+<li><p>npreg: 怀孕次数。</p></li>
+<li><p>glu: 血糖浓度，由口服葡萄糖耐量测试给出。</p></li>
+<li><p>bp: 舒张压(单位为mm Hg)</p></li>
+<li><p>skin: 三头肌皮褶厚度(单位为mm)。</p></li>
+<li><p>bmi: 身体质量指数。</p></li>
+<li><p>ped: 糖尿病家族影响因素。</p></li>
+<li><p>age: 年龄。</p></li>
+<li><p>type: 是否患有糖尿病(是/否)</p></li>
+</ul>
+
+<p>数据集包含在MASS这个R包中，一个数据框是Pima.tr,另一个数据框的是Pima.te。我们不将它们分别作为训练集和测试集，而是将其合在一起，然后建立自己的训练集和测试集，目的是学习如何使用R完成这样的任务。</p>
+
+<pre><code class="r">library(class)
+library(kknn)
+library(e1071)
+library(kernlab)
+library(caret)
+library(MASS)
+library(reshape2)
+library(ggplot2)
+library(pROC)
+
+data(Pima.tr)
+str(Pima.tr)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    200 obs. of  8 variables:
+##  $ npreg: int  5 7 5 0 0 5 3 1 3 2 ...
+##  $ glu  : int  86 195 77 165 107 97 83 193 142 128 ...
+##  $ bp   : int  68 70 82 76 60 76 58 50 80 78 ...
+##  $ skin : int  28 33 41 43 25 27 31 16 15 37 ...
+##  $ bmi  : num  30.2 25.1 35.8 47.9 26.4 35.6 34.3 25.9 32.4 43.3 ...
+##  $ ped  : num  0.364 0.163 0.156 0.259 0.133 ...
+##  $ age  : int  24 55 35 26 23 52 25 24 63 31 ...
+##  $ type : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 1 1 1 2 ...
+</code></pre>
+
+<pre><code class="r">data(Pima.te)
+str(Pima.te)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    332 obs. of  8 variables:
+##  $ npreg: int  6 1 1 3 2 5 0 1 3 9 ...
+##  $ glu  : int  148 85 89 78 197 166 118 103 126 119 ...
+##  $ bp   : int  72 66 66 50 70 72 84 30 88 80 ...
+##  $ skin : int  35 29 23 32 45 19 47 38 41 35 ...
+##  $ bmi  : num  33.6 26.6 28.1 31 30.5 25.8 45.8 43.3 39.3 29 ...
+##  $ ped  : num  0.627 0.351 0.167 0.248 0.158 0.587 0.551 0.183 0.704 0.263 ...
+##  $ age  : int  50 31 21 26 53 51 31 33 27 29 ...
+##  $ type : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 2 1 1 2 2 2 2 1 1 2 ...
+</code></pre>
+
+<pre><code class="r">pima &lt;- rbind(Pima.tr, Pima.te)
+str(pima)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    532 obs. of  8 variables:
+##  $ npreg: int  5 7 5 0 0 5 3 1 3 2 ...
+##  $ glu  : int  86 195 77 165 107 97 83 193 142 128 ...
+##  $ bp   : int  68 70 82 76 60 76 58 50 80 78 ...
+##  $ skin : int  28 33 41 43 25 27 31 16 15 37 ...
+##  $ bmi  : num  30.2 25.1 35.8 47.9 26.4 35.6 34.3 25.9 32.4 43.3 ...
+##  $ ped  : num  0.364 0.163 0.156 0.259 0.133 ...
+##  $ age  : int  24 55 35 26 23 52 25 24 63 31 ...
+##  $ type : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 1 1 1 2 ...
+</code></pre>
+
+<pre><code class="r">pima.melt &lt;- melt(pima, id.var = &quot;type&quot;)
+ggplot(data = pima.melt, aes(x = type, y = value)) + geom_boxplot() + 
+    facet_wrap(~variable, ncol = 2)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/></p>
+
+<pre><code class="r">pima.scale &lt;- data.frame(scale(pima[, -8]))
+# scale.pima = as.data.frame(scale(pima[,1:7], byrow=FALSE))
+# #do not create own function
+str(pima.scale)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    532 obs. of  7 variables:
+##  $ npreg: num  0.448 1.052 0.448 -1.062 -1.062 ...
+##  $ glu  : num  -1.13 2.386 -1.42 1.418 -0.453 ...
+##  $ bp   : num  -0.285 -0.122 0.852 0.365 -0.935 ...
+##  $ skin : num  -0.112 0.363 1.123 1.313 -0.397 ...
+##  $ bmi  : num  -0.391 -1.132 0.423 2.181 -0.943 ...
+##  $ ped  : num  -0.403 -0.987 -1.007 -0.708 -1.074 ...
+##  $ age  : num  -0.708 2.173 0.315 -0.522 -0.801 ...
+</code></pre>
+
+<pre><code class="r">pima.scale$type &lt;- pima$type
+
+pima.scale.melt &lt;- melt(pima.scale, id.var = &quot;type&quot;)
+ggplot(data = pima.scale.melt, aes(x = type, y = value)) + geom_boxplot() + 
+    facet_wrap(~variable, ncol = 2)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/></p>
+
+<pre><code class="r">cor(pima.scale[-8])
+</code></pre>
+
+<pre><code>##             npreg       glu          bp       skin
+## npreg 1.000000000 0.1253296 0.204663421 0.09508511
+## glu   0.125329647 1.0000000 0.219177950 0.22659042
+## bp    0.204663421 0.2191779 1.000000000 0.22607244
+## skin  0.095085114 0.2265904 0.226072440 1.00000000
+## bmi   0.008576282 0.2470793 0.307356904 0.64742239
+## ped   0.007435104 0.1658174 0.008047249 0.11863557
+## age   0.640746866 0.2789071 0.346938723 0.16133614
+##               bmi         ped        age
+## npreg 0.008576282 0.007435104 0.64074687
+## glu   0.247079294 0.165817411 0.27890711
+## bp    0.307356904 0.008047249 0.34693872
+## skin  0.647422386 0.118635569 0.16133614
+## bmi   1.000000000 0.151107136 0.07343826
+## ped   0.151107136 1.000000000 0.07165413
+## age   0.073438257 0.071654133 1.00000000
+</code></pre>
+
+<pre><code class="r">table(pima.scale$type)
+</code></pre>
+
+<pre><code>## 
+##  No Yes 
+## 355 177
+</code></pre>
+
+<pre><code class="r">set.seed(502)
+ind &lt;- sample(2, nrow(pima.scale), replace = TRUE, prob = c(0.7, 
+    0.3))
+train &lt;- pima.scale[ind == 1, ]
+test &lt;- pima.scale[ind == 2, ]
+str(train)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    385 obs. of  8 variables:
+##  $ npreg: num  0.448 0.448 -0.156 -0.76 -0.156 ...
+##  $ glu  : num  -1.42 -0.775 -1.227 2.322 0.676 ...
+##  $ bp   : num  0.852 0.365 -1.097 -1.747 0.69 ...
+##  $ skin : num  1.123 -0.207 0.173 -1.253 -1.348 ...
+##  $ bmi  : num  0.4229 0.3938 0.2049 -1.0159 -0.0712 ...
+##  $ ped  : num  -1.007 -0.363 -0.485 0.441 -0.879 ...
+##  $ age  : num  0.315 1.894 -0.615 -0.708 2.916 ...
+##  $ type : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 2 1 1 1 ...
+</code></pre>
+
+<pre><code class="r">str(test)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    147 obs. of  8 variables:
+##  $ npreg: num  0.448 1.052 -1.062 -1.062 -0.458 ...
+##  $ glu  : num  -1.13 2.386 1.418 -0.453 0.225 ...
+##  $ bp   : num  -0.285 -0.122 0.365 -0.935 0.528 ...
+##  $ skin : num  -0.112 0.363 1.313 -0.397 0.743 ...
+##  $ bmi  : num  -0.391 -1.132 2.181 -0.943 1.513 ...
+##  $ ped  : num  -0.403 -0.987 -0.708 -1.074 2.093 ...
+##  $ age  : num  -0.7076 2.173 -0.5217 -0.8005 -0.0571 ...
+##  $ type : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 2 1 2 1 1 1 ...
+</code></pre>
+
+<p>使用KNN建模关键在于选择最合适的参数(k)在确定k值方面，caret包又可以大显身手了。先建立一个供实验用的输入网格，k值从2到20，每次增加1。使用expand.grid()和seq()函数可以轻松实现。在caret包中，作用于KNN函数的参数非常简单直接，就是.k。</p>
+
+<p>选择参数时，还是使用交叉验证。先建立一个名为control的对象，然后使用caret包中的trainControl()函数。</p>
+
+<p>使用train()函数建立计算最优k值的对象，train()函数 也在caret包中。别忘了在进行任何随机抽样之前，都要先设定随机数种子。使用train()函数建立对象时，需要指定模型公式、训练数据集名称和一个合适的方法。模型公式和以前一样-y~x，方法就是knn。这些参数设定之后，R代码就可以建立对象并计算最优k值了，代码如下所示:</p>
+
+<pre><code class="r">grid1 &lt;- expand.grid(.k = seq(2, 20, by = 1))
+control = trainControl(method = &quot;cv&quot;)
+set.seed(123)
+knn.train &lt;- train(type ~ ., data = train, method = &quot;knn&quot;, trControl = control, 
+    tuneGrid = grid1)
+knn.train
+</code></pre>
+
+<pre><code>## k-Nearest Neighbors 
+## 
+## 385 samples
+##   7 predictor
+##   2 classes: &#39;No&#39;, &#39;Yes&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 345, 347, 347, 346, 347, 347, ... 
+## Resampling results across tuning parameters:
+## 
+##   k   Accuracy   Kappa    
+##    2  0.7291262  0.3579438
+##    3  0.7661606  0.4218716
+##    4  0.7688596  0.4318872
+##    5  0.7660324  0.4220202
+##    6  0.7657659  0.4140541
+##    7  0.7791161  0.4501050
+##    8  0.7713563  0.4371057
+##    9  0.7816835  0.4559734
+##   10  0.7868792  0.4661169
+##   11  0.7841835  0.4627038
+##   12  0.7736572  0.4406084
+##   13  0.7789845  0.4408541
+##   14  0.7712888  0.4150304
+##   15  0.7790520  0.4401016
+##   16  0.7869467  0.4552805
+##   17  0.7739238  0.4262446
+##   18  0.7686606  0.4104614
+##   19  0.7738596  0.4303754
+##   20  0.7791228  0.4437383
+## 
+## Accuracy was used to select the optimal model using
+##  the largest value.
+## The final value used for the model was k = 16.
+</code></pre>
+
+<p>一致性百分比是分类器的分类结果与实际分类相符合的程度(就是正确率)， 期望一致性百分比是分类器靠随机选择获得的与实际分类相符合的程度。Kappa统计量的值越大，分类器的分类效果越好，Kappa为1时达到一致性的最大值。下面将模型应用到测试数据集上，通过一个完整的例子说明如何计算正确率和Kappa。使用class包中的knn()函数实现。要使用这个函数，至少需要指定4个参数:训练数据、测试数据、训练集中的正确标记、k值。</p>
+
+<pre><code class="r">knn.test &lt;- knn(train[, -8], test[, -8], train[, 8], k = 17)
+table(knn.test, test$type)
+</code></pre>
+
+<pre><code>##         
+## knn.test No Yes
+##      No  77  26
+##      Yes 16  28
+</code></pre>
+
+<pre><code class="r">(77 + 28)/147
+</code></pre>
+
+<pre><code>## [1] 0.7142857
+</code></pre>
+
+<pre><code class="r"># calculate Kappa
+prob.agree &lt;- (77 + 28)/147
+prob.chance &lt;- ((77 + 26) * (77 + 16) + (16 + 28) * (26 + 28))/(147 * 
+    147)
+prob.chance
+</code></pre>
+
+<pre><code>## [1] 0.5532417
+</code></pre>
+
+<pre><code class="r">kappa &lt;- (prob.agree - prob.chance)/(1 - prob.chance)
+kappa
+</code></pre>
+
+<pre><code>## [1] 0.3604723
+</code></pre>
+
+<pre><code class="r">library(fmsb)
+mytable &lt;- table(knn.test, test$type)
+Kappa.test(mytable, conf.level = 0.95)
+</code></pre>
+
+<pre><code>## $Result
+## 
+##  Estimate Cohen&#39;s kappa statistics and test the null
+##  hypothesis that the extent of agreement is same as
+##  random (kappa=0)
+## 
+## data:  mytable
+## Z = 3.9274, p-value = 4.293e-05
+## 95 percent confidence interval:
+##  0.1970096 0.5239351
+## sample estimates:
+## [1] 0.3604723
+## 
+## 
+## $Judgement
+## [1] &quot;Fair agreement&quot;
+</code></pre>
+
+<p>Kappa只是“Fair agreement”，在测试集上的正确率仅比70%高一-点， 所以应该看看是否可以使用加权最近邻法得到更好的结果。加权最近邻法提高了离观测更近的邻居的影响力，降低了远离观测的邻居的影响力。观测离空间点越远，对它的影响力的惩罚就越大。要使用加权最近邻法，需要kknn包中的train.kknn()函数来选择最优的加权方式。</p>
+
+<p>train.kknn()函数使用我们前面介绍过的LOOCV选择最优参数，比如最优的K最近邻数量、二选一的距离测量方式，以及核函数。</p>
+
+<p>我们集中讨论两种加权方法: triangular和epanechnikov。 赋予权重之前，算法对所有距离进行标准化处理，使它们的值都在0和1之间。triangular加权方法先算出1减去距离的差，再用差作为权重去乘这个距离。epanechnikov加权方 法是用3/4乘以(1 -距离的平方)。为了方便比较，我们把这两种加权方法和标准的不加权方法放在一起。先指定随机数种子，然后使用kknn()函数建立训练集对象，这个函数要求指定的参数有:k值的最大值kmax、距离distance (1表示绝对值距离，2表示欧氏距离)、核函数。在我们的模型中，kmax设定为25，distance为2， 代码如下:</p>
+
+<pre><code class="r">set.seed(123)
+kknn.train &lt;- train.kknn(type ~ ., data = train, kmax = 25, distance = 2, 
+    kernel = c(&quot;rectangular&quot;, &quot;triangular&quot;, &quot;epanechnikov&quot;))
+plot(kknn.train)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-4"/>
+图中X轴表示的是K值，Y轴表示的是核函数误分类观测的百分比。令人惊讶的是，不加权分类方式（rectangular）在K=19时表现最好。</p>
+
+<pre><code class="r">kknn.train
+</code></pre>
+
+<pre><code>## 
+## Call:
+## train.kknn(formula = type ~ ., data = train, kmax = 25, distance = 2,     kernel = c(&quot;rectangular&quot;, &quot;triangular&quot;, &quot;epanechnikov&quot;))
+## 
+## Type of response variable: nominal
+## Minimal misclassification: 0.212987
+## Best kernel: rectangular
+## Best k: 19
+</code></pre>
+
+<pre><code class="r">kknn.pred &lt;- predict(kknn.train, newdata = test)
+table(kknn.pred, test$type)
+</code></pre>
+
+<pre><code>##          
+## kknn.pred No Yes
+##       No  76  27
+##       Yes 17  27
+</code></pre>
+
+<h2>SVM建模</h2>
+
+<p>使用e1071包构建SVM模型，先从线性支持向量分类器开始，然后转入非线性模型。e1071包中有一个非常好的用于SVM的函数——tune.svm()，它可以帮助我们选择调优参数及核函数。tune.svm()使 用交叉验证使调优参数达到最优。我们先建立一个名为linear.tune的对象，然后使用summary()函数看看其中的内容。代码如下所示:</p>
+
+<pre><code class="r"># linear tune
+set.seed(123)
+linear.tune &lt;- tune.svm(type ~ ., data = train, kernel = &quot;linear&quot;, 
+    cost = c(0.001, 0.01, 0.1, 1, 5, 10))
+summary(linear.tune)
+</code></pre>
+
+<pre><code>## 
+## Parameter tuning of &#39;svm&#39;:
+## 
+## - sampling method: 10-fold cross validation 
+## 
+## - best parameters:
+##  cost
+##  0.01
+## 
+## - best performance: 0.2 
+## 
+## - Detailed performance results:
+##    cost     error dispersion
+## 1 1e-03 0.3192308 0.04698696
+## 2 1e-02 0.2000000 0.04579145
+## 3 1e-01 0.2102564 0.05714612
+## 4 1e+00 0.2076248 0.06252977
+## 5 5e+00 0.2102564 0.06321544
+## 6 1e+01 0.2102564 0.06321544
+</code></pre>
+
+<p>对于这些数据，最优成本函数cost为0.01，误分类误差率为20%，我们在测试集上进行预测和校验，使用predict()函数，指定newdata=test;</p>
+
+<pre><code class="r">best.linear &lt;- linear.tune$best.model
+tune.test &lt;- predict(best.linear, newdata = test)
+table(tune.test, test$type)
+</code></pre>
+
+<pre><code>##          
+## tune.test No Yes
+##       No  82  24
+##       Yes 11  30
+</code></pre>
+
+<pre><code class="r">(82 + 30)/147
+</code></pre>
+
+<pre><code>## [1] 0.7619048
+</code></pre>
+
+<p>线性支持向量分类器在训练集和测试集上表现得都比KNN稍好。e1071包中有一个用于SVM的非常好的函数-tune.svm()，可以帮助我们选择调优参数或核函数。现在看看非线性模型能否表现更好，依然使用交叉验证选择调优参数。我们试验的第一个核函数是多项式核函数，需要调整优化两个参数:多项式的阶(degree)与核系数(coef0)。设定多项式的阶是3、4和5，核系数从0.1逐渐增加到4，代码如下所示:</p>
+
+<pre><code class="r"># SVM with e1071; tune the poly only
+set.seed(123)
+poly.tune &lt;- tune.svm(type ~ ., data = train, kernel = &quot;polynomial&quot;, 
+    degree = c(3, 4, 5), coef0 = c(0.1, 0.5, 1, 2, 3, 4))
+summary(poly.tune)
+</code></pre>
+
+<pre><code>## 
+## Parameter tuning of &#39;svm&#39;:
+## 
+## - sampling method: 10-fold cross validation 
+## 
+## - best parameters:
+##  degree coef0
+##       3     3
+## 
+## - best performance: 0.2209177 
+## 
+## - Detailed performance results:
+##    degree coef0     error dispersion
+## 1       3   0.1 0.2339406 0.05673284
+## 2       4   0.1 0.2416329 0.05898725
+## 3       5   0.1 0.2441970 0.06195056
+## 4       3   0.5 0.2418354 0.06226721
+## 5       4   0.5 0.2468961 0.07055752
+## 6       5   0.5 0.2414980 0.05339164
+## 7       3   1.0 0.2339406 0.05280244
+## 8       4   1.0 0.2649123 0.05419548
+## 9       5   1.0 0.2625506 0.07622638
+## 10      3   2.0 0.2235493 0.05464342
+## 11      4   2.0 0.2493927 0.05941857
+## 12      5   2.0 0.2755061 0.06597294
+## 13      3   3.0 0.2209177 0.05595814
+## 14      4   3.0 0.2520243 0.05094380
+## 15      5   3.0 0.2701754 0.04813547
+## 16      3   4.0 0.2261134 0.05428339
+## 17      4   4.0 0.2493927 0.06747803
+## 18      5   4.0 0.2857625 0.05870079
+</code></pre>
+
+<pre><code class="r">best.poly &lt;- poly.tune$best.model
+poly.test &lt;- predict(best.poly, newdata = test)
+table(poly.test, test$type)
+</code></pre>
+
+<pre><code>##          
+## poly.test No Yes
+##       No  75  25
+##       Yes 18  29
+</code></pre>
+
+<pre><code class="r">(81 + 26)/147
+</code></pre>
+
+<pre><code>## [1] 0.7278912
+</code></pre>
+
+<p>这个模型的表现还不如线性模型。下面测试径向基核函数，此处只需找出一个参数gamma,在0.1~4中依次检验。如果gamma过小，模型就不能解释决策边界的复杂性;如果gamma过大，模型就会严重过拟合。我们还是要在测试集上进行验证，和前面一样。</p>
+
+<pre><code class="r"># tune the rbf
+set.seed(123)
+rbf.tune &lt;- tune.svm(type ~ ., data = train, kernel = &quot;radial&quot;, 
+    gamma = c(0.1, 0.5, 1, 2, 3, 4))
+summary(rbf.tune)
+</code></pre>
+
+<pre><code>## 
+## Parameter tuning of &#39;svm&#39;:
+## 
+## - sampling method: 10-fold cross validation 
+## 
+## - best parameters:
+##  gamma
+##    0.1
+## 
+## - best performance: 0.2184885 
+## 
+## - Detailed performance results:
+##   gamma     error dispersion
+## 1   0.1 0.2184885 0.05636224
+## 2   0.5 0.2236842 0.06496235
+## 3   1.0 0.2752362 0.06431054
+## 4   2.0 0.3244939 0.04452924
+## 5   3.0 0.3218623 0.04750687
+## 6   4.0 0.3192308 0.04698696
+</code></pre>
+
+<pre><code class="r">best.rbf &lt;- rbf.tune$best.model
+rbf.test &lt;- predict(best.rbf, newdata = test)
+table(rbf.test, test$type)
+</code></pre>
+
+<pre><code>##         
+## rbf.test No Yes
+##      No  76  26
+##      Yes 17  28
+</code></pre>
+
+<pre><code class="r">(73 + 21)/147
+</code></pre>
+
+<pre><code>## [1] 0.6394558
+</code></pre>
+
+<pre><code class="r"># tune the sigmoid
+set.seed(123)
+sigmoid.tune &lt;- tune.svm(type ~ ., data = train, kernel = &quot;sigmoid&quot;, 
+    gamma = c(0.1, 0.5, 1, 2, 3, 4), coef0 = c(0.1, 0.5, 1, 2, 
+        3, 4))
+summary(sigmoid.tune)
+</code></pre>
+
+<pre><code>## 
+## Parameter tuning of &#39;svm&#39;:
+## 
+## - sampling method: 10-fold cross validation 
+## 
+## - best parameters:
+##  gamma coef0
+##    0.1   0.1
+## 
+## - best performance: 0.2101889 
+## 
+## - Detailed performance results:
+##    gamma coef0     error dispersion
+## 1    0.1   0.1 0.2101889 0.06844133
+## 2    0.5   0.1 0.2881242 0.07399055
+## 3    1.0   0.1 0.2985830 0.07442363
+## 4    2.0   0.1 0.2856275 0.03959643
+## 5    3.0   0.1 0.2827935 0.06092125
+## 6    4.0   0.1 0.2935223 0.08685399
+## 7    0.1   0.5 0.2334683 0.08787718
+## 8    0.5   0.5 0.2933198 0.08615339
+## 9    1.0   0.5 0.2987179 0.05894058
+## 10   2.0   0.5 0.3009447 0.06724507
+## 11   3.0   0.5 0.3037112 0.07594313
+## 12   4.0   0.5 0.2962213 0.08011745
+## 13   0.1   1.0 0.2728745 0.08381160
+## 14   0.5   1.0 0.3066127 0.06722716
+## 15   1.0   1.0 0.2775304 0.05618176
+## 16   2.0   1.0 0.3060054 0.07541155
+## 17   3.0   1.0 0.2933198 0.06786442
+## 18   4.0   1.0 0.2985830 0.08166238
+## 19   0.1   2.0 0.2155196 0.07736128
+## 20   0.5   2.0 0.3692308 0.08603337
+## 21   1.0   2.0 0.3481781 0.06052096
+## 22   2.0   2.0 0.2570175 0.04241475
+## 23   3.0   2.0 0.2905533 0.05586494
+## 24   4.0   2.0 0.3141026 0.06505962
+## 25   0.1   3.0 0.3192308 0.04698696
+## 26   0.5   3.0 0.3508097 0.05834655
+## 27   1.0   3.0 0.3717949 0.08106407
+## 28   2.0   3.0 0.3351552 0.04363826
+## 29   3.0   3.0 0.3064777 0.05576306
+## 30   4.0   3.0 0.2959514 0.05254327
+## 31   0.1   4.0 0.3192308 0.04698696
+## 32   0.5   4.0 0.3533063 0.06060383
+## 33   1.0   4.0 0.3848178 0.08806008
+## 34   2.0   4.0 0.3506748 0.06107104
+## 35   3.0   4.0 0.3010121 0.06866140
+## 36   4.0   4.0 0.2957490 0.06078291
+</code></pre>
+
+<pre><code class="r">best.sigmoid &lt;- sigmoid.tune$best.model
+sigmoid.test &lt;- predict(best.sigmoid, newdata = test)
+table(sigmoid.test, test$type)
+</code></pre>
+
+<pre><code>##             
+## sigmoid.test No Yes
+##          No  74  23
+##          Yes 19  31
+</code></pre>
+
+<pre><code class="r">(82 + 35)/147
+</code></pre>
+
+<pre><code>## [1] 0.7959184
+</code></pre>
+
+<p>KNN在测试集上最好的正确率只有71%左右，相反，通过SVM可以获得接近80%的正确率。在简单选择具有最优正确率的模型(本案例中是使用sigmoid核函数的SVM模型)之前，先看看如何通过对混淆矩阵的深入研究来比较各种模型。</p>
+
+<p>我们继续使用caret包的confusionMatrix()函数。请注意，在前面的内容中，我们使用过InformationValue包中的同名函数。但caret包中的这 个函数会生成我们评价和选择最优模型所需的所有统计量。先从建立的最后一个模型开始，使用的语法和基础的table()函数一样，不同之处是要指定positive类，代码如下所示:</p>
+
+<pre><code class="r">confusionMatrix(sigmoid.test, test$type, positive = &quot;Yes&quot;)
+</code></pre>
+
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction No Yes
+##        No  74  23
+##        Yes 19  31
+##                                          
+##                Accuracy : 0.7143         
+##                  95% CI : (0.634, 0.7857)
+##     No Information Rate : 0.6327         
+##     P-Value [Acc &gt; NIR] : 0.02308        
+##                                          
+##                   Kappa : 0.3756         
+##                                          
+##  Mcnemar&#39;s Test P-Value : 0.64343        
+##                                          
+##             Sensitivity : 0.5741         
+##             Specificity : 0.7957         
+##          Pos Pred Value : 0.6200         
+##          Neg Pred Value : 0.7629         
+##              Prevalence : 0.3673         
+##          Detection Rate : 0.2109         
+##    Detection Prevalence : 0.3401         
+##       Balanced Accuracy : 0.6849         
+##                                          
+##        &#39;Positive&#39; Class : Yes            
+## 
+</code></pre>
+
+<pre><code class="r">confusionMatrix(tune.test, test$type, positive = &quot;Yes&quot;)
+</code></pre>
+
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction No Yes
+##        No  82  24
+##        Yes 11  30
+##                                           
+##                Accuracy : 0.7619          
+##                  95% CI : (0.6847, 0.8282)
+##     No Information Rate : 0.6327          
+##     P-Value [Acc &gt; NIR] : 0.0005615       
+##                                           
+##                   Kappa : 0.4605          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.0425225       
+##                                           
+##             Sensitivity : 0.5556          
+##             Specificity : 0.8817          
+##          Pos Pred Value : 0.7317          
+##          Neg Pred Value : 0.7736          
+##              Prevalence : 0.3673          
+##          Detection Rate : 0.2041          
+##    Detection Prevalence : 0.2789          
+##       Balanced Accuracy : 0.7186          
+##                                           
+##        &#39;Positive&#39; Class : Yes             
+## 
+</code></pre>
+
+<p>我们要再次用到caret包，因为它可以基于kernlab包在线性SVM中进行交叉验证。要完成上面的任务，需要设定随机种子数，在caret包中的rfeControl()函数中指定交叉验证方法,使用rfe()函数执行一个递归的特征选择过程，最后检验模型在测试集上的运行情况。在rfeControl()中，你需要根据使用的模型指定functions参数。可以使用几种不同的functions参数，此处使用IrFuncs。如果想看可用的functions参数列表，最好使用?rfeControl和?caretFuncs命令查看相关文档。本例代码如下:</p>
+
+<h3>SVM特征选择</h3>
+
+<pre><code class="r">set.seed(123)
+rfeCNTL &lt;- rfeControl(functions = lrFuncs, method = &quot;cv&quot;, number = 10)
+svm.features &lt;- rfe(train[, 1:7], train[, 8], sizes = c(7, 6, 
+    5, 4), rfeControl = rfeCNTL, method = &quot;svmLinear&quot;)
+svm.features
+</code></pre>
+
+<pre><code>## 
+## Recursive feature selection
+## 
+## Outer resampling method: Cross-Validated (10 fold) 
+## 
+## Resampling performance over subset size:
+## 
+##  Variables Accuracy  Kappa AccuracySD KappaSD Selected
+##          4   0.7845 0.4774    0.06121  0.1619         
+##          5   0.7898 0.4855    0.05589  0.1551        *
+##          6   0.7870 0.4774    0.05563  0.1561         
+##          7   0.7897 0.4826    0.05499  0.1545         
+## 
+## The top 5 variables (out of 5):
+##    glu, ped, npreg, bmi, age
+</code></pre>
+
+<pre><code class="r">svm.5 &lt;- svm(type ~ glu + ped + npreg + bmi + age, data = train, 
+    kernel = &quot;linear&quot;)
+svm.5.predict = predict(svm.5, newdata = test[c(1, 2, 5, 6, 7)])
+table(svm.5.predict, test$type)
+</code></pre>
+
+<pre><code>##              
+## svm.5.predict No Yes
+##           No  79  21
+##           Yes 14  33
+</code></pre>
+
+<p>本章讨论了两种新的分类技术: KNN和SVM，并在一个小规模数据集上分别使用这两种技术建立了模型，以预测某个人是否患有糖尿病，还对模型进行了比较。在KNN部分，我们介绍了不加权和加权的最近邻算法。在预测某个人是否患有糖尿病方面，这些方法的表现都不如SVM。我们研究了如何使用e1701包建立线性的和非线性的支持向量机，并对其进行调优。使用功能极其强大而又全面的caret包比较线性和非线性支持向量机的预测能力，然后发现，使用sigmoid核函数的非线性支持向量机具有最好的性能。最后，我们简单介绍了如何使用caret包进行粗略的特征选择。因为对于那些像SVM一样使用黑盒技术的方法来说，特征选择确实是个艰巨的挑战。</p>
+
+</body>
+
+</html>

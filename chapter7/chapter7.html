@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Fine-Gray检验与竞争风险模型</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>Fine-Gray检验与竞争风险模型</h1>
+
+<p>Xianxiong Ma</p>
+
+<p>2020年3月16日</p>
+
+<h4>背景</h4>
+
+<ul>
+<li><p>某研究人员收集了本市2007年确诊为轻度认知损害(MCI)的518例老年患者资料，包括基本人口学特征、生活方式、体格检查和合并疾病信息等，并于2010~2013年完成6次随访调查，主要观察结局为发生阿尔兹海默病(AD)。随访期间，共发生AD 78例，失访84例，其中28例搬迁、31例退出、25例死亡。试问影响MCI向AD转归的因素都有哪些?</p></li>
+<li><p>生存分析是预后研究中比较常见的统计分析方法，但是经典的生存分析-般只关心一个终点事件(即研究者感兴趣的结局)，而医学研究中观察的终点往往并不唯一(即出现不感兴趣的结局)。</p></li>
+<li><p>比如MCI患者在观察期间死于癌症、心血管疾病、车祸等原因而未发生AD，就不能为AD的发病做出贡献，即死亡“竞争”了AD的发生。传统统计方法将发生AD前死亡的个体、失访个体和未发生AD个体均按删失数据(censored data) 处理，可能会导致估计偏差。</p></li>
+</ul>
+
+<h4>竞争风险模型简介</h4>
+
+<ul>
+<li><p>上述例子应该选用竞争风险模型。竞争风险模型(Competing Risk Model)是一种处理多种潜在结局生存数据的分析方法，早在1999年Fine和Gray就提出了部分分布的半参数比例风险模型，通常使用的终点指标是累积发生率函数(Cumulative incidence function, CIF)</p></li>
+<li><p>本例中可以将发生AD前死亡作为AD的竞争风险事件，采用竞争风险模型进行分析。竞争风险的单因素分析常用来估计关心终点事件的发生率，多因素分析常用来探索预后影响因素及效应值。</p></li>
+<li><p>对于死亡率较高的老年人群，当有竞争风险事件存在时，采用传统生存分析方法(K-M法、Cox比例风险回归模型)会高估所研究疾病的发生风险，产生竞争风险偏倚，有人专门]研究发现约46%的文献可能存在这种偏倚。</p></li>
+<li><p>一般的统计软件没有进行竞争风险分析的相应模块，可以用R软件的“cmprsk” 程序包进行编程。同时，SAS 9.4版本也新增了竞争风险分析模块，可以用PHREG语句完成，主要是在原Model选项中增加了“eventcode=&ldquo; 语句，用来指明哪个取值为感兴趣的结局，同时还增加了直接绘图功能。</p></li>
+</ul>
+
+<h4>案例</h4>
+
+<p>研究骨髓移植对比血液移植治疗白血病的疗效，结局定义为“复发”，假定患者移植后不幸因为移植不良反应死亡，那这些发生移植相关死亡的患者就无法观察到“复发”的终点，也就是说“移植相关死亡”与“复发”存在竞争风险。</p>
+
+<p><strong><em>Sex</em></strong> : 性别； M=男，F=女</p>
+
+<p><strong><em>D</em></strong> : 疾病； ALL，AML</p>
+
+<p><strong><em>Phase</em></strong> : 疾病所处阶段； CR1, CR2, CR3, Relapse</p>
+
+<p><strong><em>Source</em></strong> : 移植类型； BM+PB，PB</p>
+
+<p><strong><em>Age</em></strong> : 年龄； 年</p>
+
+<p><strong><em>Ftime</em></strong> : 失败时间（事件发生时长）； 月</p>
+
+<p><strong><em>Status</em></strong> : 结局状态； 0=删失，1=复发，2=竞争风险事件</p>
+
+<h2>数据描述与单因素生存函数</h2>
+
+<pre><code class="r">library(foreign)
+bmt &lt;- read.csv(&quot;bmtcrr.csv&quot;)
+head(bmt, 10)
+</code></pre>
+
+<pre><code>##    Sex   D   Phase Age Status Source  ftime
+## 1    M ALL Relapse  48      2  BM+PB   0.67
+## 2    F AML     CR2  23      1  BM+PB   9.50
+## 3    M ALL     CR3   7      0  BM+PB 131.77
+## 4    F ALL     CR2  26      2  BM+PB  24.03
+## 5    F ALL     CR2  36      2  BM+PB   1.47
+## 6    M ALL Relapse  17      2  BM+PB   2.23
+## 7    M ALL     CR1   7      0  BM+PB 124.83
+## 8    F ALL     CR1  17      2  BM+PB  10.53
+## 9    M ALL     CR1  26      0  BM+PB 123.90
+## 10   F ALL Relapse   8      1  BM+PB   2.00
+</code></pre>
+
+<pre><code class="r">bmt$D &lt;- as.factor(bmt$D)
+
+library(survival)
+library(cmprsk)
+library(splines)
+
+attach(bmt)
+crmod &lt;- cuminc(ftime, Status, D)  #构建单因素生存函数
+crmod
+</code></pre>
+
+<pre><code>## Tests:
+##        stat         pv df
+## 1 2.8623325 0.09067592  1
+## 2 0.4481279 0.50322531  1
+## Estimates and Variances:
+## $est
+##              20        40        60        80       100       120
+## ALL 1 0.3713851 0.3875571 0.3875571 0.3875571 0.3875571 0.3875571
+## AML 1 0.2414530 0.2663827 0.2810390 0.2810390 0.2810390        NA
+## ALL 2 0.3698630 0.3860350 0.3860350 0.3860350 0.3860350 0.3860350
+## AML 2 0.4439103 0.4551473 0.4551473 0.4551473 0.4551473        NA
+## 
+## $var
+##                20          40          60          80         100         120
+## ALL 1 0.003307032 0.003405375 0.003405375 0.003405375 0.003405375 0.003405375
+## AML 1 0.001801156 0.001995487 0.002130835 0.002130835 0.002130835          NA
+## ALL 2 0.003268852 0.003373130 0.003373130 0.003373130 0.003373130 0.003373130
+## AML 2 0.002430406 0.002460425 0.002460425 0.002460425 0.002460425          NA
+</code></pre>
+
+<pre><code class="r"># 上面1代表复发（1）相对于删失，2代表竞争风险事件（2，移植？）相对于删失
+
+plot(crmod, xlab = &quot;Month&quot;, ylab = &quot;CIF&quot;, lwd = 2, lty = 1, col = c(&quot;red&quot;, &quot;blue&quot;, 
+    &quot;black&quot;, &quot;forestgreen&quot;))
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/></p>
+
+<h2>cmprsk model(多因素)</h2>
+
+<pre><code class="r"># 定义所有可能为竞争风险因素的协方差矩阵
+cov1 &lt;- data.frame(age = bmt$Age,
+                   sex_F = ifelse(bmt$Sex==&#39;F&#39;,1,0),
+                   dis_AML = ifelse(bmt$D==&#39;AML&#39;,1,0),
+                   phase_cr1 = ifelse(bmt$Phase==&#39;CR1&#39;,1,0),
+                   phase_cr2 = ifelse(bmt$Phase==&#39;CR2&#39;,1,0),
+                   phase_cr3 = ifelse(bmt$Phase==&#39;CR3&#39;,1,0), #没设置relapse就是以relapse为参照
+                   source_PB = ifelse(bmt$Source==&#39;PB&#39;,1,0)) ## 手动设置哑变量
+
+cov1
+</code></pre>
+
+<pre><code>##     age sex_F dis_AML phase_cr1 phase_cr2 phase_cr3 source_PB
+## 1    48     0       0         0         0         0         0
+## 2    23     1       1         0         1         0         0
+## 3     7     0       0         0         0         1         0
+## 4    26     1       0         0         1         0         0
+## 5    36     1       0         0         1         0         0
+## 6    17     0       0         0         0         0         0
+## 7     7     0       0         1         0         0         0
+## 8    17     1       0         1         0         0         0
+## 9    26     0       0         1         0         0         0
+## 10    8     1       0         0         0         0         0
+## 11   29     0       0         0         0         0         0
+## 12   13     0       1         0         0         0         0
+## 13   29     1       1         0         1         0         0
+## 14    7     0       0         0         0         0         0
+## 15   40     0       0         0         0         0         0
+## 16   20     1       0         0         1         0         0
+## 17   18     0       0         0         0         1         0
+## 18   29     0       1         1         0         0         0
+## 19    6     0       0         1         0         0         0
+## 20   33     0       1         0         1         0         0
+## 21   27     1       0         0         0         1         0
+## 22   22     1       0         0         1         0         1
+## 23   15     0       0         0         0         1         1
+## 24    8     0       0         0         1         0         1
+## 25   46     0       1         0         1         0         1
+## 26   21     0       0         0         0         0         1
+## 27   21     1       0         0         0         0         1
+## 28    7     0       1         0         0         0         1
+## 29    4     0       0         0         0         0         1
+## 30   53     1       1         0         0         0         1
+## 31   27     0       1         0         1         0         1
+## 32   28     0       1         0         0         0         1
+## 33   23     1       0         0         1         0         1
+## 34   17     0       0         0         0         0         1
+## 35   19     1       0         0         0         0         1
+## 36   39     0       1         0         0         0         1
+## 37   15     0       0         0         1         0         1
+## 38   47     0       1         0         1         0         1
+## 39   16     1       1         0         0         0         1
+## 40   17     1       0         1         0         0         1
+## 41   26     0       1         0         0         1         1
+## 42   44     0       1         0         1         0         1
+## 43   30     1       1         0         0         0         1
+## 44   32     0       1         0         0         0         1
+## 45   20     0       1         1         0         0         1
+## 46   38     0       1         1         0         0         1
+## 47   17     0       0         0         0         0         1
+## 48   38     0       1         0         0         0         1
+## 49   36     0       1         0         1         0         1
+## 50   34     0       1         0         1         0         1
+## 51   42     1       1         0         1         0         1
+## 52   58     1       1         0         0         0         1
+## 53   30     1       1         0         0         0         1
+## 54   37     1       0         1         0         0         1
+## 55   25     0       0         1         0         0         1
+## 56   47     1       1         1         0         0         1
+## 57   46     1       0         1         0         0         1
+## 58   21     0       1         0         1         0         1
+## 59   17     1       1         0         0         0         1
+## 60   25     0       0         0         0         0         1
+## 61   45     1       1         0         1         0         1
+## 62   17     0       0         1         0         0         1
+## 63   44     0       1         0         0         0         1
+## 64   20     1       1         1         0         0         1
+## 65   18     0       1         0         1         0         1
+## 66   46     1       1         0         1         0         1
+## 67   49     1       1         0         0         0         1
+## 68   17     0       0         0         0         0         1
+## 69   36     1       0         0         0         0         1
+## 70   14     0       0         0         1         0         1
+## 71   22     0       0         0         0         0         1
+## 72   38     0       1         0         0         1         1
+## 73   20     1       0         0         1         0         1
+## 74   26     1       0         0         0         0         1
+## 75   20     0       0         0         0         0         1
+## 76   28     0       1         1         0         0         1
+## 77   45     1       1         0         0         0         1
+## 78   17     0       1         0         0         0         1
+## 79   40     0       1         0         1         0         1
+## 80    9     1       0         0         0         0         1
+## 81   18     0       1         0         0         0         1
+## 82   33     1       1         0         0         0         1
+## 83   33     0       0         1         0         0         1
+## 84   17     1       1         0         1         0         1
+## 85   17     1       0         0         0         0         1
+## 86   28     0       1         0         1         0         1
+## 87   26     1       1         1         0         0         1
+## 88   32     0       0         0         1         0         1
+## 89   62     0       1         0         0         0         1
+## 90   46     0       1         0         0         0         1
+## 91   20     1       1         1         0         0         1
+## 92   50     1       1         0         1         0         1
+## 93   40     0       1         0         0         0         1
+## 94   43     0       1         1         0         0         1
+## 95   31     1       1         0         0         1         1
+## 96   46     1       0         1         0         0         1
+## 97   51     0       1         0         0         0         1
+## 98   39     0       0         0         0         0         1
+## 99   19     1       0         0         0         0         1
+## 100  33     1       0         1         0         0         1
+## 101  23     1       1         0         0         0         1
+## 102  50     1       0         1         0         0         1
+## 103  36     1       1         1         0         0         1
+## 104  36     0       1         0         1         0         1
+## 105  35     0       0         1         0         0         1
+## 106  41     1       1         0         0         0         1
+## 107  28     1       1         1         0         0         1
+## 108  30     0       1         1         0         0         1
+## 109  39     1       1         1         0         0         1
+## 110  52     0       1         1         0         0         1
+## 111  38     0       1         1         0         0         1
+## 112  35     0       1         1         0         0         1
+## 113  27     1       1         0         0         1         1
+## 114  38     0       1         1         0         0         1
+## 115  22     1       1         0         0         0         1
+## 116  26     0       0         1         0         0         1
+## 117  47     1       1         0         1         0         1
+## 118  17     0       1         0         0         0         1
+## 119  21     0       0         0         0         0         1
+## 120  28     0       0         1         0         0         1
+## 121  24     0       0         0         1         0         1
+## 122  35     1       1         1         0         0         1
+## 123  19     1       0         0         0         1         1
+## 124  23     0       0         1         0         0         1
+## 125  33     0       0         0         1         0         1
+## 126  38     1       0         0         0         1         1
+## 127  36     0       1         1         0         0         1
+## 128  48     0       1         0         0         0         1
+## 129  25     1       1         0         0         0         1
+## 130  22     0       0         0         1         0         1
+## 131  37     1       1         0         0         0         1
+## 132  52     0       1         0         1         0         1
+## 133  53     1       1         1         0         0         1
+## 134  22     0       1         0         1         0         1
+## 135  20     0       0         0         1         0         1
+## 136  51     0       1         1         0         0         1
+## 137  33     0       1         0         0         0         1
+## 138  33     1       1         0         0         1         1
+## 139  20     0       0         1         0         0         1
+## 140  37     0       1         0         0         0         1
+## 141  14     1       1         1         0         0         1
+## 142  33     0       1         1         0         0         1
+##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 35 rows ]
+</code></pre>
+
+<pre><code class="r">mod1 &lt;- crr(bmt$ftime, bmt$Status, cov1, failcode=1, cencode=0)
+# 构建多因素竞争风险模型，cov1为可能影响结局的协方差矩阵，failcode为感兴趣的结局事件，cencode为删失，其余为竞争风险因素
+summary(mod1)
+</code></pre>
+
+<pre><code>## Competing Risks Regression
+## 
+## Call:
+## crr(ftime = bmt$ftime, fstatus = bmt$Status, cov1 = cov1, failcode = 1, 
+##     cencode = 0)
+## 
+##              coef exp(coef) se(coef)      z p-value
+## age       -0.0185     0.982   0.0119 -1.554  0.1200
+## sex_F     -0.0352     0.965   0.2900 -0.122  0.9000
+## dis_AML   -0.4723     0.624   0.3054 -1.547  0.1200
+## phase_cr1 -1.1018     0.332   0.3764 -2.927  0.0034
+## phase_cr2 -1.0200     0.361   0.3558 -2.867  0.0041
+## phase_cr3 -0.7314     0.481   0.5766 -1.268  0.2000
+## source_PB  0.9211     2.512   0.5530  1.666  0.0960
+## 
+##           exp(coef) exp(-coef)  2.5% 97.5%
+## age           0.982      1.019 0.959 1.005
+## sex_F         0.965      1.036 0.547 1.704
+## dis_AML       0.624      1.604 0.343 1.134
+## phase_cr1     0.332      3.009 0.159 0.695
+## phase_cr2     0.361      2.773 0.180 0.724
+## phase_cr3     0.481      2.078 0.155 1.490
+## source_PB     2.512      0.398 0.850 7.426
+## 
+## Num. cases = 177
+## Pseudo Log-likelihood = -267 
+## Pseudo likelihood ratio test = 24.4  on 7 df,
+</code></pre>
+
+<pre><code class="r">library(aod)
+wald.test(mod1$var,mod1$coef,Terms = 4:6) #比空模型有统计学意义
+</code></pre>
+
+<pre><code>## Wald test:
+## ----------
+## 
+## Chi-squared test:
+## X2 = 14.0, df = 3, P(&gt; X2) = 0.0029
+</code></pre>
+
+</body>
+
+</html>

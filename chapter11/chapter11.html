@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>诊断试验数据处理与ROC分析</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>诊断试验数据处理与ROC分析</h1>
+
+<p>Xianxiong Ma</p>
+
+<p>2020年3月16日</p>
+
+<h2>ROC曲线绘制及AUC计算</h2>
+
+<h4>案例1</h4>
+
+<pre><code class="r">example21_2 &lt;- read.table(&quot;example21_2.csv&quot;, header = TRUE, 
+    sep = &quot;,&quot;)
+example21_2
+</code></pre>
+
+<pre><code>##    group value
+## 1      1   6.5
+## 2      1  13.5
+## 3      1  12.8
+## 4      1   6.2
+## 5      1  13.9
+## 6      1  14.7
+## 7      1   9.5
+## 8      1   9.0
+## 9      1   6.9
+## 10     1  16.8
+## 11     1  13.3
+## 12     1  10.8
+## 13     1  12.2
+## 14     1  14.9
+## 15     1  13.7
+## 16     1  12.8
+## 17     1   5.3
+## 18     1  11.8
+## 19     1  12.4
+## 20     1   7.6
+## 21     1  13.3
+## 22     1  11.9
+## 23     1  11.2
+## 24     1  12.3
+## 25     1  12.7
+## 26     0   8.5
+## 27     0   6.4
+## 28     0   4.6
+## 29     0   1.7
+## 30     0   9.7
+## 31     0   5.3
+## 32     0   4.9
+## 33     0   5.7
+## 34     0   3.8
+## 35     0   6.5
+## 36     0   6.3
+## 37     0   5.4
+## 38     0   3.3
+## 39     0   4.7
+## 40     0   8.6
+## 41     0   6.3
+## 42     0   5.9
+## 43     0   4.8
+## 44     0   4.5
+## 45     0   5.2
+</code></pre>
+
+<pre><code class="r">attach(example21_2)
+summary(example21_2)
+</code></pre>
+
+<pre><code>##      group            value       
+##  Min.   :0.0000   Min.   : 1.700  
+##  1st Qu.:0.0000   1st Qu.: 5.400  
+##  Median :1.0000   Median : 8.500  
+##  Mean   :0.5556   Mean   : 8.847  
+##  3rd Qu.:1.0000   3rd Qu.:12.400  
+##  Max.   :1.0000   Max.   :16.800
+</code></pre>
+
+<pre><code class="r">str(example21_2)  #structure of dataframe
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    45 obs. of  2 variables:
+##  $ group: int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ value: num  6.5 13.5 12.8 6.2 13.9 14.7 9.5 9 6.9 16.8 ...
+</code></pre>
+
+<pre><code class="r"># install.packages(&#39;ROCR&#39;)
+library(ROCR)
+pred &lt;- prediction(example21_2$value, example21_2$group)
+pred
+</code></pre>
+
+<pre><code>## An object of class &quot;prediction&quot;
+## Slot &quot;predictions&quot;:
+## [[1]]
+##  [1]  6.5 13.5 12.8  6.2 13.9 14.7  9.5  9.0  6.9
+## [10] 16.8 13.3 10.8 12.2 14.9 13.7 12.8  5.3 11.8
+## [19] 12.4  7.6 13.3 11.9 11.2 12.3 12.7  8.5  6.4
+## [28]  4.6  1.7  9.7  5.3  4.9  5.7  3.8  6.5  6.3
+## [37]  5.4  3.3  4.7  8.6  6.3  5.9  4.8  4.5  5.2
+## 
+## 
+## Slot &quot;labels&quot;:
+## [[1]]
+##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [23] 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [45] 0
+## Levels: 0 &lt; 1
+## 
+## 
+## Slot &quot;cutoffs&quot;:
+## [[1]]
+##  [1]  Inf 16.8 14.9 14.7 13.9 13.7 13.5 13.3 12.8
+## [10] 12.7 12.4 12.3 12.2 11.9 11.8 11.2 10.8  9.7
+## [19]  9.5  9.0  8.6  8.5  7.6  6.9  6.5  6.4  6.3
+## [28]  6.2  5.9  5.7  5.4  5.3  5.2  4.9  4.8  4.7
+## [37]  4.6  4.5  3.8  3.3  1.7
+## 
+## 
+## Slot &quot;fp&quot;:
+## [[1]]
+##  [1]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+## [16]  0  0  1  1  1  2  3  3  3  4  5  7  7  8  9
+## [31] 10 11 12 13 14 15 16 17 18 19 20
+## 
+## 
+## Slot &quot;tp&quot;:
+## [[1]]
+##  [1]  0  1  2  3  4  5  6  8 10 11 12 13 14 15 16
+## [16] 17 18 18 19 20 20 20 21 22 23 23 23 24 24 24
+## [31] 24 25 25 25 25 25 25 25 25 25 25
+## 
+## 
+## Slot &quot;tn&quot;:
+## [[1]]
+##  [1] 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20
+## [16] 20 20 19 19 19 18 17 17 17 16 15 13 13 12 11
+## [31] 10  9  8  7  6  5  4  3  2  1  0
+## 
+## 
+## Slot &quot;fn&quot;:
+## [[1]]
+##  [1] 25 24 23 22 21 20 19 17 15 14 13 12 11 10  9
+## [16]  8  7  7  6  5  5  5  4  3  2  2  2  1  1  1
+## [31]  1  0  0  0  0  0  0  0  0  0  0
+## 
+## 
+## Slot &quot;n.pos&quot;:
+## [[1]]
+## [1] 25
+## 
+## 
+## Slot &quot;n.neg&quot;:
+## [[1]]
+## [1] 20
+## 
+## 
+## Slot &quot;n.pos.pred&quot;:
+## [[1]]
+##  [1]  0  1  2  3  4  5  6  8 10 11 12 13 14 15 16
+## [16] 17 18 19 20 21 22 23 24 25 27 28 30 31 32 33
+## [31] 34 36 37 38 39 40 41 42 43 44 45
+## 
+## 
+## Slot &quot;n.neg.pred&quot;:
+## [[1]]
+##  [1] 45 44 43 42 41 40 39 37 35 34 33 32 31 30 29
+## [16] 28 27 26 25 24 23 22 21 20 18 17 15 14 13 12
+## [31] 11  9  8  7  6  5  4  3  2  1  0
+</code></pre>
+
+<pre><code class="r">perf &lt;- performance(pred, &quot;tpr&quot;, &quot;fpr&quot;)
+plot(perf, col = &quot;red&quot;)
+abline(a = 0, b = 1, col = &quot;blue&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAhFBMVEUAAAAAADoAAGYAAP8AOjoAOmYAOpAAZrY6AAA6ADo6AGY6OmY6OpA6kNtmAABmADpmAGZmOgBmOpBmZjpmtv+QOgCQOjqQZgCQkDqQtpCQ29uQ2/+2ZgC225C2/7a2/9u2///bkDrb25Db/7bb/9vb////AAD/tmb/25D//7b//9v///97GmCYAAAACXBIWXMAAAsSAAALEgHS3X78AAAOy0lEQVR4nO3dDVfbyBWAYbO0wGaBJC3Qbu3d4rbEX////1WSbUkOsj2jGc3cO/d9T/aQxWZieNDXWLJnOzLZLPcDoDwBbzTgjQa80YA3GvBGA95owBsNeKMBbzTgjQa80YA3GvBGA95owBsNeKMBbzTgjQa80YA3GvBGA95owBsNeKMBbzTgjQa80YA3GvBGA95owBsNeKMBbzTgjQa80YA3GvBGA95owBsNeKMBbzTgjQa80YA3GvBGA95owBsNeKMBbzTgjQa80YA3GvBGA95owBsNeKMBb7QQ+BkJ7nZC+ICvpYm7vaIDfJndXtMBvshur+oAX2C39fYdeHPtd+uC4dcPzU7iL+8jvpYydNidD4Xfvr40H1d3H95fSxk6HsaFwm++vZ989PlaSl97+M4Sb6pu2iZ4G795Zhuvpt50HXv1hupP0wJvp5Pp+VjwvZ279nkA3wemrh+auj19WoYlfnQ/fuR+BD79/Gwc8GNTxf7JHfixKXcHfly6VvMD7uEzd8+HPbnPB/IFw+tiH3IPX+K3r0+jv1ZrBbhHWNVvvs5Hf63KlK3mh93ZxnunjP2MO/C+KXO/PXc2LfBelbGarwPeJ2XsF9yB96kgd+Dd07aav+huDj7g6a3cD923yxdJmYPP/QCSFXZxHPBau+IOfJmdPXxvA77ErrIDX2QO7sAXmIs78OXl5A58cbm5A19aju7AF5arO/Bl5ewOfEldn7bpAr6cPNjVwtt5js09L3ed8CXzjc7PXSU87AN5uiuEZ3EfytddHzzsQ3m7q4PHfSh/d2XwrOaH8jl8b1MFD/tQY9hVwbO4DzbOXRE87IONdFcDz+I+3Fh3LfCwDzfaXQk87sONd1cBz2r+TAHuGuBhP1OIO/BqGzVt0wW80sLYgddaqDvwOgt2B15l4e7AayyCO/AKi+EOvL6iuAOvrjjuwCsrcNqmC3hVxWIHXlfx3IHXVER34BUV0x14PUV1B15Ncd2B11Jkd+B1FO3wvQ14DUVnjwC/fpjdL4febxD4aE3gHgy/fZvvlveV/+OH99c6Zh5+Cvdg+Pp945dPJ+8f7/y1jlmHn8SdJV5807hH2cY/sY2fronc2asX3lTuwMtuMvdo8L2du9mxq19k/jUJrxR/2qYr6xJvl9SpCdmBF9yk7lH26utG7dUDf6Fp3cOP419fmo+ruxHH8cCfb2L3KDN3/Y8+Xwv8+aZ2Z4mX2eTu4dv4zTPb+OhN785evcQSuAMvrymnbbqAl1YSduDFlcgdeGGlcgdeVsncgRdVOnfgJZXQHXhBpXQHXkxpDt/bgBdSWnbgpZTaHXgZJXcHXkTp3YGXUAZ34AWUwx34/GVxBz57edyBz1ziaZsu4LOWiz0lPFfFfS6fe0r4gKEKLaM78BnL6Q58vrK6A5+tvO7A5yqzO/B5ynb43gZ8jrKzA58lAe7AZ0iCO/DpE+EOfPJkuAOfOiHuwCdOijvwaRPjDnzK8k/bdAGfLkHswCdMlDvwyZLlDnyqhLkDnyhp7sCnSZw78EmS5w58igS6Az99kqZtuoCfOpHswE+eUHfgJ06qO/DTJtbdEX77Orv779d50NAW4eW6u8FvX5/Wjx8DbzvjM7RBeMHubvCbb+8V/MAbTfkMbQ9esrvPEr9kifdJ5uF7m/M2fjbzdDcOL5s9wl79+uGl/rUY+K0wDS/d3Xkbvxt8M8n9Gw4uXir/x2tvOGgKXry7C/zhLQWH1/XVb8P2be7yFqOW4OW7+yzxw1WL++ppt1vdXxvaELwC9wgzd4tmbfDZ3S68BndH+OW594/1GNoMvAp3x1X913m1Kl8OLNUeQ1uB1+HuvI3f/zl/x96Ns2On97ABL3zapstt5u5tXv1Zf2FVfy0t7K7b+Mp8NZs9BQ1tAV6Pe4yZu3M7fvbgFbkHH8fXM3d1A8/ZmoPX5O68jT93h+PvBDN3utwdl/jns8fxLPHHdLmHb+PP/1LYglfmzsmWkdLmDnyU1EzbdAEfIX3swMdIozvn1Yen0p3z6oPT6c559aEpdee8+sC0unNefVhq3dmrD0nh4Xsb8ONTzO78JI3van5g6OLgVbu7LvH16Rae51qWDq/b3WdVv+L06l7K3VniR6bdnW38uNS7s1c/Kv3uTlfLfvvz/KlX7kMXBF+AO0u8f5qnbbpCXxjBfehS4ItgD39hBPehC4EvxD38hRGchy4DvhR3tvF+FePOXr1X5bizxPtUkDvwHpXk7voaOHcfy9nsJWho7fBlHL63ub4GTvXH9itilMXufjhXLfOm4Utzd365s5v5yvKqvjh3du6cKs8deJcKdOe8eodKdHe+kmbXHNOFDK0Wvkh3npa9WpnuLPFXKmzapott/MVKZWev/nLlugN/qYLdfVb15i6oKNnda+fO2BsVFO3O4dzZynZ3fZLmfmdtiS/c3fXaucMJ1l5n3amGL92dvfrBip226QJ+oPLZgR/KgjvwnzPhDvynbLi7z9xZeRFjI+7OM3dWXsTYirvzzJ2RFzE24+6zxJd/IoaBw/c2TsToMsQea69+8CIbbfCm3IPhL0zjK4O35e71JM3gUzSb5+rTBSzxxtx9lvjlmbcR3zzf/Uc9vDV3H/jzh3Prh6GVgSZ4c+4+8AW/erU9d69tfLGXSRt0j/YkTW87MDt2eg+x8Jambbo8TrYMHFoqvEl21ynbN88n5oaGFgpv1D38OL5+74rh21TAW3UP3sZvX/e7fAPP2WqAN+vuAn9xC3+8ceBOCuDtugfDq17iDbsHw1/Y/ouHt+zuBD/qOhr58Kbdw5d456GFwductumyCm+c3Sy8eXejF1TgbhMed5vwuO9MwuNeZw8e9yZr8NYP39uMwcN+zBY87m2m4HHvsgSPey9D8Lj3swOP+0lm4HE/zQo87j9lA55pm0+ZgIf9cxbgcR/IADzuQ5UPj/tgxcPjPlzp8LifqXB43M9VNjzuZysZnmmbCxUMD/ulyoXH/WLFwuN+uVLhcb9SofC4X6tMeNyvViQ87tcrEJ7Dd5fKg4fdqeLgcXerNHjcHSsMHnfXyoLH3bmi4HF3ryR43D0qCB53n4qBZ9rGr1LgYfesEHjcfSsDHnfvioDH3b8S4HEfUQHwuI9JPzzuo9IOz+H7yILh1w+zm3m2952DfWyh8PX7zm1fnzLB4z66UPg9+OI+Czzu44uxxFct//IlPTzuAQVv4zfPT/WH5ed3I5waHveQ9O7V4x6UWnjcw4oF39u5mx07vUdceNwD07nEM20TnEp42MOLMXOX+v3jcY9QpOP43eru48rXRoPHPUZxZu5SztXjHiV1SzzucYowc5d0G497pJTt1eMeK13wuEdLEzzTNhFTBA97zPTA4x41NfC4x00LPO6RUwKPe+x0wOMePRXwuMdPATyH71MkHx72SRIPj/s0SYfHfaKEw+M+VbLhcZ8s0fC4T5dkeNwnTDA87lMmFp5pm2mTCg/7xAmFx33qZMLjPnki4XGfPonwuCdIIDzuKZIHj3uSxMHjniZh8EzbpEoWPOzJEgWPe7okweOeMEHwuKdMDjzuSRMDj3vapMDjnjgZ8By+J08EPOzpkwCPe4YEwOOeo/zwuGcpOzzuecoNj3umMsPjnqu88LhnKyc80zYZywgPe87yweOetWzwuOctFzzumcsEj3vu8sDjnr0s8LjnLwM8h+8SCob3fotR2EUUCu/9hoO4yygU3vctRnEXUuIlHncpBW/jvd5iFHcxJd2rx11OKeFxF1Qs+N7O3ezY6T1+4C6pZEs80zaySgUPu7ASzdzhLq00x/G4iyvJzB3u8kqxxOMusAQzd7hLbPq9etxFNjk87jKbGJ5pG6lNCw+72CaFx11uU8LjLrgJ4W9nJLjp4KcbKu5gYh9YzsGANzoY8EYHA97oYMAbHQx4o4MBb3SwqP806Ql4owFvNOCNBrzRgDca8EYD3mjAGw14o0WA3zzPDlfZdH+LMFh9seZLpLG6C4IiDLZ9nd3MYw1WfZcDl6p4tv7y/tOw1wuHr3+ky/vTv0UYbPN1vlv/GvIDPnk4y8Bfot5gi5eh68nGDVZ/l8vQhWV1+N3x+vmHw9dXU+5/5bq/RRhsVX8HixCt/sNZ//Y9cO1x8l0G1g22fvwIHnBx8/v+u/T6+YfDN4/96/zkbxEGqwsbrDfW9u1fgav6/nf5j9BVfTdYlCX+qO318w+Hr1d7+3+u+1uEwXb1qusp0ljLp9BtfDfY+uGl+RHHeWQRdotaeK+fv+AlfvMc5H76wELhJ/ou672YVfDeXZ4lfqJtfLNkRXpgy+Y886Bfo953+bdg+N6eTPhKctfCJ97G1yvk4179U/he/XGIYPfThxO6xPcGWwSv6nvfZcwl3uvnH+04vv7Hox3HV4Ptl9Igre6BRTuOP3yXoVTdYKtZ8KTAHt7358/MndGANxrwRgPeaMAbDXijAW804I0GvNGANxrwRgPeaMAbDXijAW804I0GvNGANxrwRgPeaMXC798g83hKtfNZx9Ud938u3iX40eWvXPgTHh+sa/cFXnTt5ZLN1daHM5nr06Lbs6M33/7ZnNp8+MT+5vWXP6v//ePLH48fu+3bvL3z+rfvv7w3YzWfinCKdeZKh2+utm7W3fV1JvXlBovjVQeb57uP+mKG6hOru4/DzcdV/b/f5vVlE4v+9R3dWN0gaisXvt7G720q0xr+cJVi9WF/YfLm+aVZqKv/qT55uLndxi8r2qfuzu1rD7RjRbhcOmflwh+3xIt6Fd5ca/JQr9mbd0y9OV6ivFu81Ddt6+W7ubmFXz/+r1nTH+68H+44Vvd5tZUOXy/W3W76YZW+r4bvlvjDzS389u33x96d91covfQ2G8orHb5Z1H+dVx/qC1Pr//ab9F39O3Hf+8Th5u5wblkfC7Z3Pl6eth+r+7zaSoevL5H+6/dmfb5o9+pvDlv7v/f36heHvfr37Wu1V/++fwGe9s7NcPuxqtvf28+rrVj464Vfl6454I1mGN52wBsNeKMBbzTgjQa80YA3GvBGA95owBsNeKMBbzTgjQa80YA3GvBG+z/yea+4ha+oDAAAAABJRU5ErkJggg==" alt="plot of chunk unnamed-chunk-1"/></p>
+
+<pre><code class="r">perf1 &lt;- performance(pred, &quot;prec&quot;, &quot;rec&quot;)
+plot(perf1)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/></p>
+
+<pre><code class="r">perf2 &lt;- performance(pred, &quot;sens&quot;, &quot;spec&quot;)
+plot(perf2)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/></p>
+
+<pre><code class="r">auc &lt;- performance(pred, &quot;auc&quot;)
+auc
+</code></pre>
+
+<pre><code>## An object of class &quot;performance&quot;
+## Slot &quot;x.name&quot;:
+## [1] &quot;None&quot;
+## 
+## Slot &quot;y.name&quot;:
+## [1] &quot;Area under the ROC curve&quot;
+## 
+## Slot &quot;alpha.name&quot;:
+## [1] &quot;none&quot;
+## 
+## Slot &quot;x.values&quot;:
+## list()
+## 
+## Slot &quot;y.values&quot;:
+## [[1]]
+## [1] 0.942
+## 
+## 
+## Slot &quot;alpha.values&quot;:
+## list()
+</code></pre>
+
+<pre><code class="r">detach(example21_2)
+</code></pre>
+
+<h4>案例2</h4>
+
+<pre><code class="r">example21_3 &lt;- read.table(&quot;example21_3.csv&quot;, header = TRUE, 
+    sep = &quot;,&quot;)
+head(example21_3)
+</code></pre>
+
+<pre><code>##   oncology       mRNA  dna
+## 1        1   1.720000 0.23
+## 2        1   3.238792 1.25
+## 3        1   8.206722 2.53
+## 4        1  16.596091 2.62
+## 5        1 125.790742 4.29
+## 6        1  36.029169 4.40
+</code></pre>
+
+<pre><code class="r">attach(example21_3)
+summary(example21_3)
+</code></pre>
+
+<pre><code>##     oncology           mRNA          
+##  Min.   :0.0000   Min.   :   0.0877  
+##  1st Qu.:0.0000   1st Qu.:   0.7090  
+##  Median :0.0000   Median :   1.4830  
+##  Mean   :0.3126   Mean   :  49.8652  
+##  3rd Qu.:1.0000   3rd Qu.:  12.9951  
+##  Max.   :1.0000   Max.   :2128.6922  
+##       dna           
+##  Min.   :     0.09  
+##  1st Qu.:     0.82  
+##  Median :    15.87  
+##  Mean   :   470.19  
+##  3rd Qu.:   200.21  
+##  Max.   :118231.00
+</code></pre>
+
+<pre><code class="r">str(example21_3)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    563 obs. of  3 variables:
+##  $ oncology: int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ mRNA    : num  1.72 3.24 8.21 16.6 125.79 ...
+##  $ dna     : num  0.23 1.25 2.53 2.62 4.29 4.4 4.71 4.77 5.21 5.48 ...
+</code></pre>
+
+<pre><code class="r"># install.packages(&#39;ROCR&#39;)
+library(ROCR)
+pred1 &lt;- prediction(example21_3$mRNA, example21_3$oncology)
+pred1
+</code></pre>
+
+<pre><code>## An object of class &quot;prediction&quot;
+## Slot &quot;predictions&quot;:
+## [[1]]
+##   [1] 1.720000e+00 3.238792e+00 8.206722e+00
+##   [4] 1.659609e+01 1.257907e+02 3.602917e+01
+##   [7] 2.933836e+02 4.827000e+02 1.394166e+01
+##  [10] 1.058632e+01 6.117069e+00 2.072543e+01
+##  [13] 9.300000e-01 2.746617e+00 6.166514e+00
+##  [16] 2.360693e+01 1.248715e+01 1.190880e+01
+##  [19] 1.200533e+01 1.741506e+01 4.256724e+00
+##  [22] 5.795181e+01 1.882372e+03 2.117815e+01
+##  [25] 6.467752e+01 6.633550e+01 1.918710e+03
+##  [28] 2.290000e+00 5.710000e+00 1.656304e+02
+##  [31] 4.425872e+01 2.799951e+02 1.063000e+01
+##  [34] 5.597971e+00 2.388216e+02 3.750412e+01
+##  [37] 5.390100e+02 2.628535e+01 5.709956e+01
+##  [40] 1.346867e+03 2.024984e+01 2.021559e+02
+##  [43] 2.033710e+02 4.907166e+02 3.898605e+02
+##  [46] 3.605086e+02 2.985610e+02 2.128692e+03
+##  [49] 2.089943e+02 8.807276e+01 6.209814e-01
+##  [52] 6.531303e-01 7.328990e-01 7.800000e-01
+##  [55] 3.599349e+00 2.467005e+01 1.060000e+00
+##  [58] 8.700000e-01 8.355049e-01 9.299674e-01
+##  [61] 8.500000e-01 8.435499e+00 6.900000e+00
+##  [64] 7.700000e-01 1.804061e+01 1.348613e+02
+##  [67] 5.818274e-01 2.811889e+01 3.431472e+00
+##  [70] 9.600000e-01 4.100000e-01 3.881557e+00
+##  [73] 2.026227e+01 3.918782e+01 5.859052e+01
+##  [76] 1.483198e+02 1.389000e+01 2.070897e+01
+##  [79] 1.188325e+01 5.200000e-01 1.930000e+00
+##  [82] 3.537394e+01 3.153063e+02 7.330000e+00
+##  [85] 5.353976e+01 2.410000e+00 3.519289e+01
+##  [88] 1.012310e+03 1.101861e+01 7.520000e+00
+##  [91] 4.121387e+02 1.918000e+01 3.330000e+00
+##  [94] 8.761591e+01 1.296447e+01 4.153130e+01
+##  [97] 1.850000e+01 1.417750e+02 9.132657e+01
+## [100] 3.670000e+00 2.214000e+01 1.467005e+02
+## [103] 1.873299e+02 6.600000e-01 1.118713e+02
+## [106] 4.729442e+01 7.976311e+01 5.032149e+00
+## [109] 6.988832e+01 7.376311e+01 9.016413e+01
+## [112] 2.241000e+01 8.740000e+00 2.069287e+00
+## [115] 1.486971e+00 8.215919e-01 1.308799e+01
+## [118] 1.307953e+00 6.675550e-01 1.183898e+00
+## [121] 2.427505e+00 2.390863e+00 6.465798e-01
+## [124] 4.035668e+01 2.796417e+00 7.099099e+00
+## [127] 5.457628e+00 2.657526e+00 2.128664e+00
+## [130] 2.554297e+00 4.195995e+00 1.131303e+01
+## [133] 8.195869e+00 2.143824e+00 1.486002e+01
+## [136] 7.703583e-01 1.302574e+01 1.108222e+01
+## [139] 1.264636e+01 2.692205e+01 5.432378e+00
+## [142] 1.813827e+02 6.656514e+00 9.520000e+00
+## [145] 1.201523e+01 1.634518e+00 2.048562e+01
+## [148] 1.240000e+00 8.446701e+00 9.403198e+01
+## [151] 1.217597e+01 1.742809e+01 4.267174e+01
+## [154] 7.700000e-01 3.905245e+00 3.038917e+00
+## [157] 4.815567e+00 1.800277e+02 7.517766e+00
+## [160] 9.944162e+00 1.720000e+00 4.771574e-01
+## [163] 2.673435e+00 4.707614e+01 8.280000e+00
+## [166] 1.572893e+02 5.309645e+00 8.558376e+00
+## [169] 1.693503e+02 3.599442e+02 1.398816e+01
+## [172] 3.361252e+01 1.531404e+02 2.452000e+01
+## [175] 4.127750e+02 9.677970e+02 1.927368e+02
+## [178] 1.231560e-01 9.408394e+00 9.251718e-01
+## [181] 5.273304e+00 6.594800e-01 9.200000e-01
+## [184] 2.599873e-01 1.005591e+00 1.076710e+01
+## [187] 7.900000e-01 1.300003e+00 7.736156e+00
+## [190] 1.493648e+01 6.425738e-01 3.556119e+00
+## [193] 7.735477e-01 7.800000e+00 4.402536e+01
+## [196] 2.768527e+00 1.161238e+00 2.882736e+00
+## [199] 4.527584e-01 6.434060e+00 2.768527e+01
+## [202] 1.119095e+01 7.952341e+00 3.423422e+01
+## [205] 3.703234e-01 2.560098e+01 1.919374e+01
+## [208] 5.355901e+01 2.080025e+01 1.343486e+00
+## [211] 2.561889e+01 4.599555e+01 1.543056e+01
+## [214] 2.820545e+01 1.106024e+01 1.130000e+00
+## [217] 1.055168e+01 5.423831e+01 1.555485e+01
+## [220] 1.131810e+01 5.947118e+01 2.060899e+03
+## [223] 4.363982e+00 3.968697e+01 2.830000e+00
+## [226] 4.962587e+00 2.350666e+01 2.538548e+02
+## [229] 5.785796e+01 7.833862e+00 5.669119e+01
+## [232] 2.538477e+02 2.733165e+02 6.930000e+00
+## [235] 2.917831e+02 2.079632e+02 1.294000e+01
+## [238] 1.620000e+01 9.483069e+01 7.222575e+00
+## [241] 3.171115e-01 5.086342e-01 2.276295e-01
+## [244] 4.238619e-01 1.978022e-01 2.919937e-01
+## [247] 5.500000e-01 4.160126e-01 5.196232e-01
+## [250] 5.900000e-01 8.007995e-01 5.164835e+00
+## [253] 4.218241e-01 4.270016e-01 8.407728e-01
+## [256] 3.657771e-01 4.270016e-01 1.483011e+00
+## [259] 2.150706e-01 4.676882e-01 6.824104e-01
+## [262] 8.655078e-01 1.295133e+00 1.302641e+00
+## [265] 2.016356e-01 5.396402e-01 9.600000e-01
+## [268] 3.713355e-01 3.876221e-01 3.967082e-01
+## [271] 4.703531e-01 5.982678e-01 6.621624e-01
+## [274] 7.981346e-01 2.285143e+00 5.423051e-01
+## [277] 7.501666e-01 1.675333e+00 5.982678e-01
+## [280] 6.995336e-01 7.128581e-01 7.337603e-01
+## [283] 7.480200e-01 1.100471e+00 3.846154e-01
+## [286] 5.200000e-01 6.605672e-01 8.221186e-01
+## [289] 6.140065e-01 6.123779e-01 1.212525e+00
+## [292] 5.732899e-01 7.849954e-01 8.207861e-01
+## [295] 1.099461e+00 7.980456e-01 6.569076e-01
+## [298] 7.328990e-01 9.183118e-01 4.397394e-01
+## [301] 6.489007e-01 9.500333e-01 7.674883e-01
+## [304] 6.528981e-01 9.200000e-01 7.861426e-01
+## [307] 4.654112e-01 5.742838e-01 7.475017e-01
+## [310] 4.869707e-01 9.580280e-01 6.275816e-01
+## [313] 5.690759e-01 7.671010e-01 5.916056e-01
+## [316] 6.433225e-01 7.319305e-01 8.631922e-01
+## [319] 6.693811e-01 5.973626e-01 7.648673e-01
+## [322] 4.071661e-01 1.911514e-01 6.009327e-01
+## [325] 6.275816e-01 6.304315e-01 7.980456e-01
+## [328] 8.674217e-01 8.927382e-01 3.469920e-01
+## [331] 6.862092e-01 5.900000e-01 6.115923e-01
+## [334] 7.575480e-01 3.469388e-01 5.996003e-01
+## [337] 7.612077e-01 5.000000e-01 8.094463e-01
+## [340] 8.664495e-01 8.664495e-01 6.530945e-01
+## [343] 7.980456e-01 6.009772e-01 6.467574e-01
+## [346] 7.980456e-01 2.500671e+00 8.770446e-02
+## [349] 5.609594e-01 7.000000e-01 8.398902e-01
+## [352] 8.660893e-01 8.631922e-01 8.778502e-01
+## [355] 4.930047e-01 6.498371e-01 6.921824e-01
+## [358] 3.096091e+00 4.357095e-01 4.703531e-01
+## [361] 5.582945e-01 6.482085e-01 7.980456e-01
+## [364] 8.306189e-01 6.880146e-01 7.337603e-01
+## [367] 1.578535e-01 7.172919e-01 7.328990e-01
+## [370] 8.061889e-01 8.272216e-01 8.420195e-01
+## [373] 8.900733e-01 2.274484e+00 1.254935e-01
+## [376] 3.089845e-01 1.479014e+00 5.929380e-01
+## [379] 9.047302e-01 9.283388e-01 7.475570e-01
+## [382] 5.316456e-01 8.127915e-01 7.282708e-01
+## [385] 7.475570e-01 5.463025e-01 6.148216e-01
+## [388] 8.631922e-01 7.282708e-01 3.420195e+00
+## [391] 5.800000e-01 1.128728e+00 7.231270e-01
+## [394] 2.544970e+00 1.200000e+00 1.148208e+01
+## [397] 2.773616e+00 5.280394e-01 7.301006e-01
+## [400] 3.494968e+00 2.986009e+00 3.736489e-01
+## [403] 5.719721e-01 3.296703e-01 1.644951e+00
+## [406] 5.289807e-01 6.514181e-01 3.600000e-01
+## [409] 6.022652e-01 2.070033e+00 1.898532e+00
+## [412] 7.501967e-01 5.542971e-01 8.674217e+00
+## [415] 4.495114e-01 6.898445e-01 9.089482e-01
+## [418] 5.782251e-01 2.999950e+00 3.600074e-01
+## [421] 8.500999e-01 8.050633e+00 3.843648e-01
+## [424] 8.322476e-01 2.811459e+00 8.094463e-01
+## [427] 5.902669e-01 7.687296e-01 5.814602e-01
+## [430] 2.871094e-01 7.312704e-01 2.370420e+00
+## [433] 3.359017e+00 3.745928e-01 2.157519e+01
+## [436] 9.606929e-01 1.754830e+00 7.500000e-01
+## [439] 2.128664e+00 6.319218e-01 6.700000e-01
+## [442] 8.200000e-01 7.848101e-01 1.224517e+00
+## [445] 2.946020e+00 7.389981e+01 2.434886e-01
+## [448] 1.635950e+01 7.864992e-01 1.772152e+00
+## [451] 8.600000e-01 1.900000e+00 4.397069e-01
+## [454] 1.754830e+01 9.381107e-01 9.560068e-02
+## [457] 2.660893e+00 1.010000e+00 9.724691e-01
+## [460] 6.459286e-01 7.688208e-01 9.800000e-01
+## [463] 4.277149e-01 5.329780e-01 3.212525e+00
+## [466] 6.498371e-01 2.015989e+00 7.000000e-01
+## [469] 7.996340e-01 6.166514e-01 1.390000e+00
+## [472] 1.304666e+00 8.179323e-01 4.853420e-01
+## [475] 8.750653e-01 1.708186e+01 1.219060e+01
+## [478] 7.246112e-01 9.875125e+00 1.200533e+00
+## [481] 1.020946e+01 1.379381e+01 4.900000e-01
+## [484] 8.306189e-01 3.600000e-01 5.700000e-01
+## [487] 9.200000e-01 8.394404e-01 1.000424e+01
+## [490] 9.055375e-01 2.271819e+00 6.612378e-01
+## [493] 8.973941e-01 1.043974e+00 4.063957e-01
+## [496] 7.280130e+00 4.300000e-01 8.700000e-01
+## [499] 2.639731e+01 1.741506e+00 1.670631e+00
+## [502] 9.496798e-01 1.732099e+01 8.100000e-01
+## [505] 3.810047e+00 5.500000e-01 2.137975e+02
+## [508] 7.328990e-01 2.900000e-01 2.318960e+01
+## [511] 5.380000e+00 1.488341e+00 6.237793e+01
+## [514] 1.620000e+00 1.217000e+01 4.900000e-01
+## [517] 9.400000e-01 7.600000e+00 1.199215e+01
+## [520] 5.009512e-01 1.450000e+00 7.052117e-01
+## [523] 6.000000e-01 3.840000e+00 1.930000e+00
+## [526] 2.020000e+00 8.700000e-01 8.180089e-01
+## [529] 6.400000e-01 7.120000e+00 2.340000e+00
+## [532] 1.170000e+00 3.027002e+01 7.900000e-01
+## [535] 8.600000e-01 1.256405e+02 8.100000e-01
+## [538] 2.393152e+00 9.891439e+01 1.900000e+00
+## [541] 7.400000e-01 5.368917e+00 5.859027e+01
+## [544] 1.559000e+01 6.289796e+01 3.990000e+00
+## [547] 7.400000e-01 1.290000e+00 6.100000e-01
+## [550] 5.450549e+01 4.328472e+02 1.080000e+00
+## [553] 6.987159e+02 2.090000e+00 7.800000e-01
+## [556] 9.464364e+01 2.543093e+02 2.142000e+01
+## [559] 1.960000e+00 4.046252e+02 4.790063e+02
+## [562] 6.744396e+02 6.900000e-01
+## 
+## 
+## Slot &quot;labels&quot;:
+## [[1]]
+##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [23] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [45] 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+##  [67] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+##  [89] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [111] 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [133] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [155] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [177] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [199] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [221] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0
+## [243] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [265] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [287] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [309] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [331] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [353] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [375] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [397] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [419] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [441] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [463] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [485] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [507] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [529] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [551] 0 0 0 0 0 0 0 0 0 0 0 0 0
+## Levels: 0 &lt; 1
+## 
+## 
+## Slot &quot;cutoffs&quot;:
+## [[1]]
+##   [1]          Inf 2.128692e+03 2.060899e+03
+##   [4] 1.918710e+03 1.882372e+03 1.346867e+03
+##   [7] 1.012310e+03 9.677970e+02 6.987159e+02
+##  [10] 6.744396e+02 5.390100e+02 4.907166e+02
+##  [13] 4.827000e+02 4.790063e+02 4.328472e+02
+##  [16] 4.127750e+02 4.121387e+02 4.046252e+02
+##  [19] 3.898605e+02 3.605086e+02 3.599442e+02
+##  [22] 3.153063e+02 2.985610e+02 2.933836e+02
+##  [25] 2.917831e+02 2.799951e+02 2.733165e+02
+##  [28] 2.543093e+02 2.538548e+02 2.538477e+02
+##  [31] 2.388216e+02 2.137975e+02 2.089943e+02
+##  [34] 2.079632e+02 2.033710e+02 2.021559e+02
+##  [37] 1.927368e+02 1.873299e+02 1.813827e+02
+##  [40] 1.800277e+02 1.693503e+02 1.656304e+02
+##  [43] 1.572893e+02 1.531404e+02 1.483198e+02
+##  [46] 1.467005e+02 1.417750e+02 1.348613e+02
+##  [49] 1.257907e+02 1.256405e+02 1.118713e+02
+##  [52] 9.891439e+01 9.483069e+01 9.464364e+01
+##  [55] 9.403198e+01 9.132657e+01 9.016413e+01
+##  [58] 8.807276e+01 8.761591e+01 7.976311e+01
+##  [61] 7.389981e+01 7.376311e+01 6.988832e+01
+##  [64] 6.633550e+01 6.467752e+01 6.289796e+01
+##  [67] 6.237793e+01 5.947118e+01 5.859052e+01
+##  [70] 5.859027e+01 5.795181e+01 5.785796e+01
+##  [73] 5.709956e+01 5.669119e+01 5.450549e+01
+##  [76] 5.423831e+01 5.355901e+01 5.353976e+01
+##  [79] 4.729442e+01 4.707614e+01 4.599555e+01
+##  [82] 4.425872e+01 4.402536e+01 4.267174e+01
+##  [85] 4.153130e+01 4.035668e+01 3.968697e+01
+##  [88] 3.918782e+01 3.750412e+01 3.602917e+01
+##  [91] 3.537394e+01 3.519289e+01 3.423422e+01
+##  [94] 3.361252e+01 3.027002e+01 2.820545e+01
+##  [97] 2.811889e+01 2.768527e+01 2.692205e+01
+## [100] 2.639731e+01 2.628535e+01 2.561889e+01
+## [103] 2.560098e+01 2.467005e+01 2.452000e+01
+## [106] 2.360693e+01 2.350666e+01 2.318960e+01
+## [109] 2.241000e+01 2.214000e+01 2.157519e+01
+## [112] 2.142000e+01 2.117815e+01 2.080025e+01
+## [115] 2.072543e+01 2.070897e+01 2.048562e+01
+## [118] 2.026227e+01 2.024984e+01 1.919374e+01
+## [121] 1.918000e+01 1.850000e+01 1.804061e+01
+## [124] 1.754830e+01 1.742809e+01 1.741506e+01
+## [127] 1.732099e+01 1.708186e+01 1.659609e+01
+## [130] 1.635950e+01 1.620000e+01 1.559000e+01
+## [133] 1.555485e+01 1.543056e+01 1.493648e+01
+## [136] 1.486002e+01 1.398816e+01 1.394166e+01
+## [139] 1.389000e+01 1.379381e+01 1.308799e+01
+## [142] 1.302574e+01 1.296447e+01 1.294000e+01
+## [145] 1.264636e+01 1.248715e+01 1.219060e+01
+## [148] 1.217597e+01 1.217000e+01 1.201523e+01
+## [151] 1.200533e+01 1.199215e+01 1.190880e+01
+## [154] 1.188325e+01 1.148208e+01 1.131810e+01
+## [157] 1.131303e+01 1.119095e+01 1.108222e+01
+## [160] 1.106024e+01 1.101861e+01 1.076710e+01
+## [163] 1.063000e+01 1.058632e+01 1.055168e+01
+## [166] 1.020946e+01 1.000424e+01 9.944162e+00
+## [169] 9.875125e+00 9.520000e+00 9.408394e+00
+## [172] 8.740000e+00 8.674217e+00 8.558376e+00
+## [175] 8.446701e+00 8.435499e+00 8.280000e+00
+## [178] 8.206722e+00 8.195869e+00 8.050633e+00
+## [181] 7.952341e+00 7.833862e+00 7.800000e+00
+## [184] 7.736156e+00 7.600000e+00 7.520000e+00
+## [187] 7.517766e+00 7.330000e+00 7.280130e+00
+## [190] 7.222575e+00 7.120000e+00 7.099099e+00
+## [193] 6.930000e+00 6.900000e+00 6.656514e+00
+## [196] 6.434060e+00 6.166514e+00 6.117069e+00
+## [199] 5.710000e+00 5.597971e+00 5.457628e+00
+## [202] 5.432378e+00 5.380000e+00 5.368917e+00
+## [205] 5.309645e+00 5.273304e+00 5.164835e+00
+## [208] 5.032149e+00 4.962587e+00 4.815567e+00
+## [211] 4.363982e+00 4.256724e+00 4.195995e+00
+## [214] 3.990000e+00 3.905245e+00 3.881557e+00
+## [217] 3.840000e+00 3.810047e+00 3.670000e+00
+## [220] 3.599349e+00 3.556119e+00 3.494968e+00
+## [223] 3.431472e+00 3.420195e+00 3.359017e+00
+## [226] 3.330000e+00 3.238792e+00 3.212525e+00
+## [229] 3.096091e+00 3.038917e+00 2.999950e+00
+## [232] 2.986009e+00 2.946020e+00 2.882736e+00
+## [235] 2.830000e+00 2.811459e+00 2.796417e+00
+## [238] 2.773616e+00 2.768527e+00 2.746617e+00
+## [241] 2.673435e+00 2.660893e+00 2.657526e+00
+## [244] 2.554297e+00 2.544970e+00 2.500671e+00
+## [247] 2.427505e+00 2.410000e+00 2.393152e+00
+## [250] 2.390863e+00 2.370420e+00 2.340000e+00
+## [253] 2.290000e+00 2.285143e+00 2.274484e+00
+## [256] 2.271819e+00 2.143824e+00 2.128664e+00
+## [259] 2.090000e+00 2.070033e+00 2.069287e+00
+## [262] 2.020000e+00 2.015989e+00 1.960000e+00
+## [265] 1.930000e+00 1.900000e+00 1.898532e+00
+## [268] 1.772152e+00 1.754830e+00 1.741506e+00
+## [271] 1.720000e+00 1.675333e+00 1.670631e+00
+## [274] 1.644951e+00 1.634518e+00 1.620000e+00
+## [277] 1.488341e+00 1.486971e+00 1.483011e+00
+## [280] 1.479014e+00 1.450000e+00 1.390000e+00
+## [283] 1.343486e+00 1.307953e+00 1.304666e+00
+## [286] 1.302641e+00 1.300003e+00 1.295133e+00
+## [289] 1.290000e+00 1.240000e+00 1.224517e+00
+## [292] 1.212525e+00 1.200533e+00 1.200000e+00
+## [295] 1.183898e+00 1.170000e+00 1.161238e+00
+## [298] 1.130000e+00 1.128728e+00 1.100471e+00
+## [301] 1.099461e+00 1.080000e+00 1.060000e+00
+## [304] 1.043974e+00 1.010000e+00 1.005591e+00
+## [307] 9.800000e-01 9.724691e-01 9.606929e-01
+## [310] 9.600000e-01 9.580280e-01 9.500333e-01
+## [313] 9.496798e-01 9.400000e-01 9.381107e-01
+## [316] 9.300000e-01 9.299674e-01 9.283388e-01
+## [319] 9.251718e-01 9.200000e-01 9.183118e-01
+## [322] 9.089482e-01 9.055375e-01 9.047302e-01
+## [325] 8.973941e-01 8.927382e-01 8.900733e-01
+## [328] 8.778502e-01 8.750653e-01 8.700000e-01
+## [331] 8.674217e-01 8.664495e-01 8.660893e-01
+## [334] 8.655078e-01 8.631922e-01 8.600000e-01
+## [337] 8.500999e-01 8.500000e-01 8.420195e-01
+## [340] 8.407728e-01 8.398902e-01 8.394404e-01
+## [343] 8.355049e-01 8.322476e-01 8.306189e-01
+## [346] 8.272216e-01 8.221186e-01 8.215919e-01
+## [349] 8.207861e-01 8.200000e-01 8.180089e-01
+## [352] 8.179323e-01 8.127915e-01 8.100000e-01
+## [355] 8.094463e-01 8.061889e-01 8.007995e-01
+## [358] 7.996340e-01 7.981346e-01 7.980456e-01
+## [361] 7.900000e-01 7.864992e-01 7.861426e-01
+## [364] 7.849954e-01 7.848101e-01 7.800000e-01
+## [367] 7.735477e-01 7.703583e-01 7.700000e-01
+## [370] 7.688208e-01 7.687296e-01 7.674883e-01
+## [373] 7.671010e-01 7.648673e-01 7.612077e-01
+## [376] 7.575480e-01 7.501967e-01 7.501666e-01
+## [379] 7.500000e-01 7.480200e-01 7.475570e-01
+## [382] 7.475017e-01 7.400000e-01 7.337603e-01
+## [385] 7.328990e-01 7.319305e-01 7.312704e-01
+## [388] 7.301006e-01 7.282708e-01 7.246112e-01
+## [391] 7.231270e-01 7.172919e-01 7.128581e-01
+## [394] 7.052117e-01 7.000000e-01 6.995336e-01
+## [397] 6.921824e-01 6.900000e-01 6.898445e-01
+## [400] 6.880146e-01 6.862092e-01 6.824104e-01
+## [403] 6.700000e-01 6.693811e-01 6.675550e-01
+## [406] 6.621624e-01 6.612378e-01 6.605672e-01
+## [409] 6.600000e-01 6.594800e-01 6.569076e-01
+## [412] 6.531303e-01 6.530945e-01 6.528981e-01
+## [415] 6.514181e-01 6.498371e-01 6.489007e-01
+## [418] 6.482085e-01 6.467574e-01 6.465798e-01
+## [421] 6.459286e-01 6.433225e-01 6.425738e-01
+## [424] 6.400000e-01 6.319218e-01 6.304315e-01
+## [427] 6.275816e-01 6.209814e-01 6.166514e-01
+## [430] 6.148216e-01 6.140065e-01 6.123779e-01
+## [433] 6.115923e-01 6.100000e-01 6.022652e-01
+## [436] 6.009772e-01 6.009327e-01 6.000000e-01
+## [439] 5.996003e-01 5.982678e-01 5.973626e-01
+## [442] 5.929380e-01 5.916056e-01 5.902669e-01
+## [445] 5.900000e-01 5.818274e-01 5.814602e-01
+## [448] 5.800000e-01 5.782251e-01 5.742838e-01
+## [451] 5.732899e-01 5.719721e-01 5.700000e-01
+## [454] 5.690759e-01 5.609594e-01 5.582945e-01
+## [457] 5.542971e-01 5.500000e-01 5.463025e-01
+## [460] 5.423051e-01 5.396402e-01 5.329780e-01
+## [463] 5.316456e-01 5.289807e-01 5.280394e-01
+## [466] 5.200000e-01 5.196232e-01 5.086342e-01
+## [469] 5.009512e-01 5.000000e-01 4.930047e-01
+## [472] 4.900000e-01 4.869707e-01 4.853420e-01
+## [475] 4.771574e-01 4.703531e-01 4.676882e-01
+## [478] 4.654112e-01 4.527584e-01 4.495114e-01
+## [481] 4.397394e-01 4.397069e-01 4.357095e-01
+## [484] 4.300000e-01 4.277149e-01 4.270016e-01
+## [487] 4.238619e-01 4.218241e-01 4.160126e-01
+## [490] 4.100000e-01 4.071661e-01 4.063957e-01
+## [493] 3.967082e-01 3.876221e-01 3.846154e-01
+## [496] 3.843648e-01 3.745928e-01 3.736489e-01
+## [499] 3.713355e-01 3.703234e-01 3.657771e-01
+## [502] 3.600074e-01 3.600000e-01 3.469920e-01
+## [505] 3.469388e-01 3.296703e-01 3.171115e-01
+## [508] 3.089845e-01 2.919937e-01 2.900000e-01
+## [511] 2.871094e-01 2.599873e-01 2.434886e-01
+## [514] 2.276295e-01 2.150706e-01 2.016356e-01
+## [517] 1.978022e-01 1.911514e-01 1.578535e-01
+## [520] 1.254935e-01 1.231560e-01 9.560068e-02
+## [523] 8.770446e-02
+## 
+## 
+## Slot &quot;fp&quot;:
+## [[1]]
+##   [1]   0   0   0   0   0   0   1   1   2   3   3
+##  [12]   3   3   4   5   5   6   7   7   7   7   8
+##  [23]   8   8   8   8   8   9   9   9   9  10  10
+##  [34]  10  10  10  10  11  11  11  11  11  11  11
+##  [45]  12  13  14  15  15  16  17  18  18  19  19
+##  [56]  20  21  22  23  24  25  26  27  27  27  28
+##  [67]  29  29  30  31  31  31  31  31  32  32  32
+##  [78]  33  34  34  34  34  34  34  35  35  35  36
+##  [89]  36  36  37  38  38  38  39  39  40  40  40
+## [100]  41  41  41  41  42  42  42  42  43  44  45
+## [111]  46  47  47  47  47  48  48  49  49  49  50
+## [122]  51  52  53  53  53  54  55  55  56  56  57
+## [133]  57  57  57  57  57  57  58  59  59  59  60
+## [144]  60  60  60  61  61  62  62  62  63  63  64
+## [155]  65  65  65  65  65  65  66  66  66  66  66
+## [166]  67  68  68  69  69  69  70  71  71  71  72
+## [177]  72  72  72  73  73  73  73  73  74  75  75
+## [188]  76  77  77  78  78  78  79  79  79  79  79
+## [199]  79  79  79  79  80  81  81  81  82  83  83
+## [210]  83  83  83  83  84  84  85  86  87  88  89
+## [221]  89  90  91  92  93  94  94  95  96  96  97
+## [232]  98  99  99  99 100 100 101 101 101 101 102
+## [243] 102 102 103 104 104 105 106 106 107 108 108
+## [254] 109 110 111 111 112 113 114 114 115 116 117
+## [265] 119 121 122 123 124 125 125 126 127 128 128
+## [276] 129 130 130 131 132 133 134 134 134 135 136
+## [287] 136 137 138 138 139 140 141 142 142 143 143
+## [298] 143 144 145 146 147 148 149 150 150 151 152
+## [309] 153 155 156 157 158 159 160 160 161 162 162
+## [320] 164 165 166 167 168 169 170 171 172 173 176
+## [331] 177 179 180 181 184 186 187 188 189 190 191
+## [342] 192 193 194 196 197 198 198 199 200 201 202
+## [353] 203 205 207 208 209 210 211 216 217 218 219
+## [364] 220 221 223 223 223 224 225 226 227 228 229
+## [375] 230 231 232 233 234 235 237 238 240 242 246
+## [386] 247 248 249 251 252 253 254 255 256 258 259
+## [397] 260 261 262 263 264 265 266 267 267 268 269
+## [408] 270 271 271 272 273 274 275 276 278 279 280
+## [419] 281 281 282 283 283 284 285 286 288 289 290
+## [430] 291 292 293 294 295 296 297 298 299 300 302
+## [441] 303 304 305 306 308 309 310 311 312 313 314
+## [452] 315 316 317 318 319 320 322 323 324 325 326
+## [463] 327 328 329 331 332 333 334 335 336 338 339
+## [474] 340 340 342 343 344 344 345 346 347 348 349
+## [485] 350 352 353 354 355 356 357 358 359 360 361
+## [496] 362 363 364 365 365 366 367 369 370 371 372
+## [507] 373 374 375 376 377 377 378 379 380 381 382
+## [518] 383 384 385 385 386 387
+## 
+## 
+## Slot &quot;tp&quot;:
+## [[1]]
+##   [1]   0   1   2   3   4   5   5   6   6   6   7
+##  [12]   8   9   9   9  10  10  10  11  12  13  13
+##  [23]  14  15  16  17  18  18  19  20  21  21  22
+##  [34]  23  24  25  26  26  27  28  29  30  31  32
+##  [45]  32  32  32  32  33  33  33  33  34  34  35
+##  [56]  35  35  35  35  35  35  35  35  36  37  37
+##  [67]  37  38  38  38  39  40  41  42  42  43  44
+##  [78]  44  44  45  46  47  48  49  49  50  51  51
+##  [89]  52  53  53  53  54  55  55  56  56  57  58
+## [100]  58  59  60  61  61  62  63  64  64  64  64
+## [111]  64  64  65  66  67  67  68  68  69  70  70
+## [122]  70  70  70  71  72  72  72  73  73  74  74
+## [133]  75  76  77  78  79  80  80  80  81  82  82
+## [144]  83  84  85  85  86  86  87  88  88  89  89
+## [155]  89  90  91  92  93  94  94  95  96  97  98
+## [166]  98  98  99  99 100 101 101 101 102 103 103
+## [177] 104 105 106 106 107 108 109 110 110 110 111
+## [188] 111 111 112 112 113 114 114 115 116 117 118
+## [199] 119 120 121 122 122 122 123 124 124 124 125
+## [210] 126 127 128 129 129 130 130 130 130 130 130
+## [221] 131 131 131 131 131 131 132 132 132 133 133
+## [232] 133 133 134 135 135 136 136 137 138 139 139
+## [243] 140 141 141 141 142 142 142 143 143 143 144
+## [254] 144 144 144 145 146 146 146 147 147 147 147
+## [265] 147 147 147 147 147 147 149 149 149 149 150
+## [276] 150 150 151 151 151 151 151 152 153 153 153
+## [287] 154 154 154 155 155 155 155 155 156 156 157
+## [298] 158 158 158 158 158 158 158 158 159 159 159
+## [309] 159 159 159 159 159 159 159 160 160 160 161
+## [320] 162 162 162 162 162 162 162 162 162 162 162
+## [331] 162 162 162 162 162 162 162 162 162 162 162
+## [342] 162 162 162 162 162 162 163 163 163 163 163
+## [353] 163 163 163 163 163 163 163 163 164 164 164
+## [364] 164 164 164 165 166 167 167 167 167 167 167
+## [375] 167 167 167 167 167 167 167 167 167 167 167
+## [386] 167 167 167 167 167 167 167 167 167 167 167
+## [397] 167 167 167 167 167 167 167 167 168 168 168
+## [408] 168 168 169 169 169 169 169 169 169 169 169
+## [419] 169 170 170 170 171 171 171 171 171 171 171
+## [430] 171 171 171 171 171 171 171 171 171 171 171
+## [441] 171 171 171 171 171 171 171 171 171 171 171
+## [452] 171 171 171 171 171 171 171 171 171 171 171
+## [463] 171 171 171 171 171 171 171 171 171 171 171
+## [474] 171 172 172 172 172 173 173 173 173 173 173
+## [485] 173 173 173 173 173 173 173 173 173 173 173
+## [496] 173 173 173 173 174 174 174 174 174 174 174
+## [507] 174 174 174 174 174 175 175 175 175 175 175
+## [518] 175 175 175 176 176 176
+## 
+## 
+## Slot &quot;tn&quot;:
+## [[1]]
+##   [1] 387 387 387 387 387 387 386 386 385 384 384
+##  [12] 384 384 383 382 382 381 380 380 380 380 379
+##  [23] 379 379 379 379 379 378 378 378 378 377 377
+##  [34] 377 377 377 377 376 376 376 376 376 376 376
+##  [45] 375 374 373 372 372 371 370 369 369 368 368
+##  [56] 367 366 365 364 363 362 361 360 360 360 359
+##  [67] 358 358 357 356 356 356 356 356 355 355 355
+##  [78] 354 353 353 353 353 353 353 352 352 352 351
+##  [89] 351 351 350 349 349 349 348 348 347 347 347
+## [100] 346 346 346 346 345 345 345 345 344 343 342
+## [111] 341 340 340 340 340 339 339 338 338 338 337
+## [122] 336 335 334 334 334 333 332 332 331 331 330
+## [133] 330 330 330 330 330 330 329 328 328 328 327
+## [144] 327 327 327 326 326 325 325 325 324 324 323
+## [155] 322 322 322 322 322 322 321 321 321 321 321
+## [166] 320 319 319 318 318 318 317 316 316 316 315
+## [177] 315 315 315 314 314 314 314 314 313 312 312
+## [188] 311 310 310 309 309 309 308 308 308 308 308
+## [199] 308 308 308 308 307 306 306 306 305 304 304
+## [210] 304 304 304 304 303 303 302 301 300 299 298
+## [221] 298 297 296 295 294 293 293 292 291 291 290
+## [232] 289 288 288 288 287 287 286 286 286 286 285
+## [243] 285 285 284 283 283 282 281 281 280 279 279
+## [254] 278 277 276 276 275 274 273 273 272 271 270
+## [265] 268 266 265 264 263 262 262 261 260 259 259
+## [276] 258 257 257 256 255 254 253 253 253 252 251
+## [287] 251 250 249 249 248 247 246 245 245 244 244
+## [298] 244 243 242 241 240 239 238 237 237 236 235
+## [309] 234 232 231 230 229 228 227 227 226 225 225
+## [320] 223 222 221 220 219 218 217 216 215 214 211
+## [331] 210 208 207 206 203 201 200 199 198 197 196
+## [342] 195 194 193 191 190 189 189 188 187 186 185
+## [353] 184 182 180 179 178 177 176 171 170 169 168
+## [364] 167 166 164 164 164 163 162 161 160 159 158
+## [375] 157 156 155 154 153 152 150 149 147 145 141
+## [386] 140 139 138 136 135 134 133 132 131 129 128
+## [397] 127 126 125 124 123 122 121 120 120 119 118
+## [408] 117 116 116 115 114 113 112 111 109 108 107
+## [419] 106 106 105 104 104 103 102 101  99  98  97
+## [430]  96  95  94  93  92  91  90  89  88  87  85
+## [441]  84  83  82  81  79  78  77  76  75  74  73
+## [452]  72  71  70  69  68  67  65  64  63  62  61
+## [463]  60  59  58  56  55  54  53  52  51  49  48
+## [474]  47  47  45  44  43  43  42  41  40  39  38
+## [485]  37  35  34  33  32  31  30  29  28  27  26
+## [496]  25  24  23  22  22  21  20  18  17  16  15
+## [507]  14  13  12  11  10  10   9   8   7   6   5
+## [518]   4   3   2   2   1   0
+## 
+## 
+## Slot &quot;fn&quot;:
+## [[1]]
+##   [1] 176 175 174 173 172 171 171 170 170 170 169
+##  [12] 168 167 167 167 166 166 166 165 164 163 163
+##  [23] 162 161 160 159 158 158 157 156 155 155 154
+##  [34] 153 152 151 150 150 149 148 147 146 145 144
+##  [45] 144 144 144 144 143 143 143 143 142 142 141
+##  [56] 141 141 141 141 141 141 141 141 140 139 139
+##  [67] 139 138 138 138 137 136 135 134 134 133 132
+##  [78] 132 132 131 130 129 128 127 127 126 125 125
+##  [89] 124 123 123 123 122 121 121 120 120 119 118
+## [100] 118 117 116 115 115 114 113 112 112 112 112
+## [111] 112 112 111 110 109 109 108 108 107 106 106
+## [122] 106 106 106 105 104 104 104 103 103 102 102
+## [133] 101 100  99  98  97  96  96  96  95  94  94
+## [144]  93  92  91  91  90  90  89  88  88  87  87
+## [155]  87  86  85  84  83  82  82  81  80  79  78
+## [166]  78  78  77  77  76  75  75  75  74  73  73
+## [177]  72  71  70  70  69  68  67  66  66  66  65
+## [188]  65  65  64  64  63  62  62  61  60  59  58
+## [199]  57  56  55  54  54  54  53  52  52  52  51
+## [210]  50  49  48  47  47  46  46  46  46  46  46
+## [221]  45  45  45  45  45  45  44  44  44  43  43
+## [232]  43  43  42  41  41  40  40  39  38  37  37
+## [243]  36  35  35  35  34  34  34  33  33  33  32
+## [254]  32  32  32  31  30  30  30  29  29  29  29
+## [265]  29  29  29  29  29  29  27  27  27  27  26
+## [276]  26  26  25  25  25  25  25  24  23  23  23
+## [287]  22  22  22  21  21  21  21  21  20  20  19
+## [298]  18  18  18  18  18  18  18  18  17  17  17
+## [309]  17  17  17  17  17  17  17  16  16  16  15
+## [320]  14  14  14  14  14  14  14  14  14  14  14
+## [331]  14  14  14  14  14  14  14  14  14  14  14
+## [342]  14  14  14  14  14  14  13  13  13  13  13
+## [353]  13  13  13  13  13  13  13  13  12  12  12
+## [364]  12  12  12  11  10   9   9   9   9   9   9
+## [375]   9   9   9   9   9   9   9   9   9   9   9
+## [386]   9   9   9   9   9   9   9   9   9   9   9
+## [397]   9   9   9   9   9   9   9   9   8   8   8
+## [408]   8   8   7   7   7   7   7   7   7   7   7
+## [419]   7   6   6   6   5   5   5   5   5   5   5
+## [430]   5   5   5   5   5   5   5   5   5   5   5
+## [441]   5   5   5   5   5   5   5   5   5   5   5
+## [452]   5   5   5   5   5   5   5   5   5   5   5
+## [463]   5   5   5   5   5   5   5   5   5   5   5
+## [474]   5   4   4   4   4   3   3   3   3   3   3
+## [485]   3   3   3   3   3   3   3   3   3   3   3
+## [496]   3   3   3   3   2   2   2   2   2   2   2
+## [507]   2   2   2   2   2   1   1   1   1   1   1
+## [518]   1   1   1   0   0   0
+## 
+## 
+## Slot &quot;n.pos&quot;:
+## [[1]]
+## [1] 176
+## 
+## 
+## Slot &quot;n.neg&quot;:
+## [[1]]
+## [1] 387
+## 
+## 
+## Slot &quot;n.pos.pred&quot;:
+## [[1]]
+##   [1]   0   1   2   3   4   5   6   7   8   9  10
+##  [12]  11  12  13  14  15  16  17  18  19  20  21
+##  [23]  22  23  24  25  26  27  28  29  30  31  32
+##  [34]  33  34  35  36  37  38  39  40  41  42  43
+##  [45]  44  45  46  47  48  49  50  51  52  53  54
+##  [56]  55  56  57  58  59  60  61  62  63  64  65
+##  [67]  66  67  68  69  70  71  72  73  74  75  76
+##  [78]  77  78  79  80  81  82  83  84  85  86  87
+##  [89]  88  89  90  91  92  93  94  95  96  97  98
+## [100]  99 100 101 102 103 104 105 106 107 108 109
+## [111] 110 111 112 113 114 115 116 117 118 119 120
+## [122] 121 122 123 124 125 126 127 128 129 130 131
+## [133] 132 133 134 135 136 137 138 139 140 141 142
+## [144] 143 144 145 146 147 148 149 150 151 152 153
+## [155] 154 155 156 157 158 159 160 161 162 163 164
+## [166] 165 166 167 168 169 170 171 172 173 174 175
+## [177] 176 177 178 179 180 181 182 183 184 185 186
+## [188] 187 188 189 190 191 192 193 194 195 196 197
+## [199] 198 199 200 201 202 203 204 205 206 207 208
+## [210] 209 210 211 212 213 214 215 216 217 218 219
+## [221] 220 221 222 223 224 225 226 227 228 229 230
+## [232] 231 232 233 234 235 236 237 238 239 240 241
+## [243] 242 243 244 245 246 247 248 249 250 251 252
+## [254] 253 254 255 256 258 259 260 261 262 263 264
+## [265] 266 268 269 270 271 272 274 275 276 277 278
+## [276] 279 280 281 282 283 284 285 286 287 288 289
+## [287] 290 291 292 293 294 295 296 297 298 299 300
+## [298] 301 302 303 304 305 306 307 308 309 310 311
+## [309] 312 314 315 316 317 318 319 320 321 322 323
+## [320] 326 327 328 329 330 331 332 333 334 335 338
+## [331] 339 341 342 343 346 348 349 350 351 352 353
+## [342] 354 355 356 358 359 360 361 362 363 364 365
+## [353] 366 368 370 371 372 373 374 379 381 382 383
+## [364] 384 385 387 388 389 391 392 393 394 395 396
+## [375] 397 398 399 400 401 402 404 405 407 409 413
+## [386] 414 415 416 418 419 420 421 422 423 425 426
+## [397] 427 428 429 430 431 432 433 434 435 436 437
+## [408] 438 439 440 441 442 443 444 445 447 448 449
+## [419] 450 451 452 453 454 455 456 457 459 460 461
+## [430] 462 463 464 465 466 467 468 469 470 471 473
+## [441] 474 475 476 477 479 480 481 482 483 484 485
+## [452] 486 487 488 489 490 491 493 494 495 496 497
+## [463] 498 499 500 502 503 504 505 506 507 509 510
+## [474] 511 512 514 515 516 517 518 519 520 521 522
+## [485] 523 525 526 527 528 529 530 531 532 533 534
+## [496] 535 536 537 538 539 540 541 543 544 545 546
+## [507] 547 548 549 550 551 552 553 554 555 556 557
+## [518] 558 559 560 561 562 563
+## 
+## 
+## Slot &quot;n.neg.pred&quot;:
+## [[1]]
+##   [1] 563 562 561 560 559 558 557 556 555 554 553
+##  [12] 552 551 550 549 548 547 546 545 544 543 542
+##  [23] 541 540 539 538 537 536 535 534 533 532 531
+##  [34] 530 529 528 527 526 525 524 523 522 521 520
+##  [45] 519 518 517 516 515 514 513 512 511 510 509
+##  [56] 508 507 506 505 504 503 502 501 500 499 498
+##  [67] 497 496 495 494 493 492 491 490 489 488 487
+##  [78] 486 485 484 483 482 481 480 479 478 477 476
+##  [89] 475 474 473 472 471 470 469 468 467 466 465
+## [100] 464 463 462 461 460 459 458 457 456 455 454
+## [111] 453 452 451 450 449 448 447 446 445 444 443
+## [122] 442 441 440 439 438 437 436 435 434 433 432
+## [133] 431 430 429 428 427 426 425 424 423 422 421
+## [144] 420 419 418 417 416 415 414 413 412 411 410
+## [155] 409 408 407 406 405 404 403 402 401 400 399
+## [166] 398 397 396 395 394 393 392 391 390 389 388
+## [177] 387 386 385 384 383 382 381 380 379 378 377
+## [188] 376 375 374 373 372 371 370 369 368 367 366
+## [199] 365 364 363 362 361 360 359 358 357 356 355
+## [210] 354 353 352 351 350 349 348 347 346 345 344
+## [221] 343 342 341 340 339 338 337 336 335 334 333
+## [232] 332 331 330 329 328 327 326 325 324 323 322
+## [243] 321 320 319 318 317 316 315 314 313 312 311
+## [254] 310 309 308 307 305 304 303 302 301 300 299
+## [265] 297 295 294 293 292 291 289 288 287 286 285
+## [276] 284 283 282 281 280 279 278 277 276 275 274
+## [287] 273 272 271 270 269 268 267 266 265 264 263
+## [298] 262 261 260 259 258 257 256 255 254 253 252
+## [309] 251 249 248 247 246 245 244 243 242 241 240
+## [320] 237 236 235 234 233 232 231 230 229 228 225
+## [331] 224 222 221 220 217 215 214 213 212 211 210
+## [342] 209 208 207 205 204 203 202 201 200 199 198
+## [353] 197 195 193 192 191 190 189 184 182 181 180
+## [364] 179 178 176 175 174 172 171 170 169 168 167
+## [375] 166 165 164 163 162 161 159 158 156 154 150
+## [386] 149 148 147 145 144 143 142 141 140 138 137
+## [397] 136 135 134 133 132 131 130 129 128 127 126
+## [408] 125 124 123 122 121 120 119 118 116 115 114
+## [419] 113 112 111 110 109 108 107 106 104 103 102
+## [430] 101 100  99  98  97  96  95  94  93  92  90
+## [441]  89  88  87  86  84  83  82  81  80  79  78
+## [452]  77  76  75  74  73  72  70  69  68  67  66
+## [463]  65  64  63  61  60  59  58  57  56  54  53
+## [474]  52  51  49  48  47  46  45  44  43  42  41
+## [485]  40  38  37  36  35  34  33  32  31  30  29
+## [496]  28  27  26  25  24  23  22  20  19  18  17
+## [507]  16  15  14  13  12  11  10   9   8   7   6
+## [518]   5   4   3   2   1   0
+</code></pre>
+
+<pre><code class="r">pred2 &lt;- prediction(example21_3$dna, example21_3$oncology)
+pred2
+</code></pre>
+
+<pre><code>## An object of class &quot;prediction&quot;
+## Slot &quot;predictions&quot;:
+## [[1]]
+##   [1]      0.23      1.25      2.53      2.62
+##   [5]      4.29      4.40      4.71      4.77
+##   [9]      5.21      5.48      8.90     12.69
+##  [13]     19.89     20.25     20.36     23.51
+##  [17]     30.28     30.85     55.24     55.32
+##  [21]     55.35     71.75     75.12    100.35
+##  [25]    128.59    358.65    363.68    376.41
+##  [29]    405.50    455.65    523.49    550.26
+##  [33]    853.10    854.06    856.24    939.95
+##  [37]   1084.25   1125.58   1132.64   1152.84
+##  [41]   1209.08   1236.26   1375.94   1550.25
+##  [45]   1588.27   1682.52   2025.63   2035.62
+##  [49]   2317.04      0.23      0.24      0.26
+##  [53]      0.34      0.36      0.65      1.61
+##  [57]      3.38      3.75      5.22      7.83
+##  [61]      8.23     10.25     10.78     11.68
+##  [65]     21.17     22.47     29.85     30.22
+##  [69]     40.36     49.70     60.33     66.46
+##  [73]     69.38     71.40     80.41     88.92
+##  [77]    157.48    163.02    175.87    182.28
+##  [81]    232.17    251.88    265.82    266.00
+##  [85]    293.42    339.88    360.10    403.39
+##  [89]    407.82    438.78    465.02    471.82
+##  [93]    479.63    606.69    667.24    739.04
+##  [97]    788.44    806.10    842.67    849.66
+## [101]    869.18    931.51    934.31    996.40
+## [105]   1181.30   1412.78   1471.05   1575.48
+## [109]   1647.45   1720.71   1805.29   2155.10
+## [113]   2526.15      0.15      0.23      0.54
+## [117]      0.60      1.40      2.23      2.62
+## [121]      5.36      5.68      5.85      6.36
+## [125]      7.14      8.15      8.23      8.25
+## [129]      8.85     10.25     10.95     11.28
+## [133]     12.25     19.04     20.35     22.32
+## [137]     25.53     33.25     38.19     50.62
+## [141]     55.23     60.06     60.45     65.38
+## [145]     83.81     87.27     97.07    107.91
+## [149]    112.96    125.25    127.22    142.90
+## [153]    170.15    174.34    176.13    187.50
+## [157]    188.61    225.26    229.92    231.84
+## [161]    232.64    237.01    410.91    551.26
+## [165]    656.84    714.60    742.52    785.12
+## [169]    800.34   1626.00   1796.30   2082.48
+## [173]   2321.26   2520.30   2815.51   2818.61
+## [177]      0.13      0.23      0.23      0.32
+## [181]      0.34      0.79      1.07      1.39
+## [185]      2.25      2.29      2.65      2.85
+## [189]      3.28      5.65      6.23      6.60
+## [193]      8.58      9.72      9.94     10.26
+## [197]     10.45     12.26     12.60     15.25
+## [201]     15.52     20.25     22.26     22.36
+## [205]     26.46     50.15     58.58     70.85
+## [209]     87.44     98.47    102.35    102.35
+## [213]    142.70    154.35    156.59    188.57
+## [217]    200.16    200.25    228.70    245.08
+## [221]    252.36    278.85    280.96    309.16
+## [225]    319.27    459.54    502.73    525.65
+## [229]    549.99    626.71    680.64    798.81
+## [233]   1028.43   1041.69   1094.92   1128.41
+## [237]   1308.32   1349.62   2042.90   2185.52
+## [241]      0.09      0.09      0.10      0.12
+## [245]      0.13      0.14      0.15      0.16
+## [249]      0.16      0.17      0.17      0.17
+## [253]      0.18      0.20      0.20      0.21
+## [257]      0.21      0.21      0.22      0.22
+## [261]      0.22      0.22      0.22      0.23
+## [265]      0.24      0.24      0.24      0.25
+## [269]      0.25      0.25      0.25      0.25
+## [273]      0.25      0.25      0.25      0.26
+## [277]      0.26      0.27      0.28      0.28
+## [281]      0.28      0.28      0.28      0.28
+## [285]      0.29      0.29      0.29      0.29
+## [289]      0.30      0.32      0.32      0.33
+## [293]      0.33      0.33      0.33      0.34
+## [297]      0.35      0.36      0.36      0.38
+## [301]      0.38      0.38      0.39      0.40
+## [305]      0.40      0.41      0.42      0.42
+## [309]      0.43      0.44      0.44      0.45
+## [313]      0.46      0.47      0.48      0.48
+## [317]      0.48      0.50      0.51      0.53
+## [321]      0.53      0.54      0.55      0.55
+## [325]      0.55      0.55      0.55      0.55
+## [329]      0.55      0.56      0.56      0.60
+## [333]      0.61      0.61      0.62      0.62
+## [337]      0.62      0.63      0.63      0.63
+## [341]      0.63      0.64      0.64      0.65
+## [345]      0.65      0.65      0.65      0.66
+## [349]      0.67      0.67      0.71      0.71
+## [353]      0.72      0.72      0.73      0.73
+## [357]      0.73      0.73      0.75      0.75
+## [361]      0.75      0.78      0.81      0.81
+## [365]      0.82      0.82      0.83      0.84
+## [369]      0.84      0.84      0.84      0.84
+## [373]      0.84      0.84      0.85      0.85
+## [377]      0.85      0.88      0.88      0.88
+## [381]      0.90      0.91      0.91      0.92
+## [385]      0.92      0.93      0.93      0.95
+## [389]      1.18      1.52      1.55      1.57
+## [393]      1.58      1.68      1.72      1.86
+## [397]      2.15      2.25      2.25      2.25
+## [401]      2.45      2.52      2.58      2.80
+## [405]      2.94      3.32      3.32      3.34
+## [409]      3.36      3.36      3.53      3.56
+## [413]      3.63      3.65      3.96      4.25
+## [417]      4.61      5.25      5.25      5.26
+## [421]      5.58      5.61      5.68      5.75
+## [425]      5.87      6.36      6.79      7.61
+## [429]      7.84      7.86      8.25      8.54
+## [433]      8.58      8.95      9.68     10.20
+## [437]     10.23     10.25     10.25     10.55
+## [441]     10.86     11.64     11.65     12.64
+## [445]     12.84     13.17     14.23     14.35
+## [449]     15.41     15.87     17.15     17.62
+## [453]     18.25     19.26     20.02     20.36
+## [457]     20.36     20.41     20.66     20.95
+## [461]     21.26     21.74     22.25     22.39
+## [465]     22.83     22.84     22.85     24.95
+## [469]     25.25     26.65     28.61     30.05
+## [473]     30.25     30.35     30.55     30.78
+## [477]     32.25     33.35     33.35     33.62
+## [481]     33.62     36.65     39.87     42.28
+## [485]     44.05     44.13     54.87     55.25
+## [489]     55.26     55.50     55.84     60.06
+## [493]     60.82     68.68     70.59     70.72
+## [497]     72.57     74.21     78.25     78.26
+## [501]     85.65     86.65     88.59     93.37
+## [505]     94.80    102.13    103.86    110.95
+## [509]    115.57    115.85    120.96    121.45
+## [513]    121.60    121.94    122.01    126.12
+## [517]    127.96    131.17    172.52    183.27
+## [521]    198.29    202.32    235.83    252.73
+## [525]    284.29    298.00    307.35    332.07
+## [529]    349.17    368.39    372.49    374.71
+## [533]    382.41    417.49    465.48    469.21
+## [537]    623.16    633.95    742.40    787.38
+## [541]    870.23    888.38    901.86    908.48
+## [545]   1076.27   1109.18   1112.54   1171.23
+## [549]   1196.12   1238.02   1392.65   1420.10
+## [553]   1568.00   1612.48   1627.42   1934.01
+## [557]   1937.68   2013.30   2193.57   2213.26
+## [561]   2233.47   2467.77 118231.00
+## 
+## 
+## Slot &quot;labels&quot;:
+## [[1]]
+##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [23] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [45] 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+##  [67] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+##  [89] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [111] 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [133] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [155] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [177] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [199] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [221] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0
+## [243] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [265] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [287] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [309] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [331] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [353] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [375] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [397] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [419] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [441] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [463] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [485] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [507] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [529] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [551] 0 0 0 0 0 0 0 0 0 0 0 0 0
+## Levels: 0 &lt; 1
+## 
+## 
+## Slot &quot;cutoffs&quot;:
+## [[1]]
+##   [1]       Inf 118231.00   2818.61   2815.51
+##   [5]   2526.15   2520.30   2467.77   2321.26
+##   [9]   2317.04   2233.47   2213.26   2193.57
+##  [13]   2185.52   2155.10   2082.48   2042.90
+##  [17]   2035.62   2025.63   2013.30   1937.68
+##  [21]   1934.01   1805.29   1796.30   1720.71
+##  [25]   1682.52   1647.45   1627.42   1626.00
+##  [29]   1612.48   1588.27   1575.48   1568.00
+##  [33]   1550.25   1471.05   1420.10   1412.78
+##  [37]   1392.65   1375.94   1349.62   1308.32
+##  [41]   1238.02   1236.26   1209.08   1196.12
+##  [45]   1181.30   1171.23   1152.84   1132.64
+##  [49]   1128.41   1125.58   1112.54   1109.18
+##  [53]   1094.92   1084.25   1076.27   1041.69
+##  [57]   1028.43    996.40    939.95    934.31
+##  [61]    931.51    908.48    901.86    888.38
+##  [65]    870.23    869.18    856.24    854.06
+##  [69]    853.10    849.66    842.67    806.10
+##  [73]    800.34    798.81    788.44    787.38
+##  [77]    785.12    742.52    742.40    739.04
+##  [81]    714.60    680.64    667.24    656.84
+##  [85]    633.95    626.71    623.16    606.69
+##  [89]    551.26    550.26    549.99    525.65
+##  [93]    523.49    502.73    479.63    471.82
+##  [97]    469.21    465.48    465.02    459.54
+## [101]    455.65    438.78    417.49    410.91
+## [105]    407.82    405.50    403.39    382.41
+## [109]    376.41    374.71    372.49    368.39
+## [113]    363.68    360.10    358.65    349.17
+## [117]    339.88    332.07    319.27    309.16
+## [121]    307.35    298.00    293.42    284.29
+## [125]    280.96    278.85    266.00    265.82
+## [129]    252.73    252.36    251.88    245.08
+## [133]    237.01    235.83    232.64    232.17
+## [137]    231.84    229.92    228.70    225.26
+## [141]    202.32    200.25    200.16    198.29
+## [145]    188.61    188.57    187.50    183.27
+## [149]    182.28    176.13    175.87    174.34
+## [153]    172.52    170.15    163.02    157.48
+## [157]    156.59    154.35    142.90    142.70
+## [161]    131.17    128.59    127.96    127.22
+## [165]    126.12    125.25    122.01    121.94
+## [169]    121.60    121.45    120.96    115.85
+## [173]    115.57    112.96    110.95    107.91
+## [177]    103.86    102.35    102.13    100.35
+## [181]     98.47     97.07     94.80     93.37
+## [185]     88.92     88.59     87.44     87.27
+## [189]     86.65     85.65     83.81     80.41
+## [193]     78.26     78.25     75.12     74.21
+## [197]     72.57     71.75     71.40     70.85
+## [201]     70.72     70.59     69.38     68.68
+## [205]     66.46     65.38     60.82     60.45
+## [209]     60.33     60.06     58.58     55.84
+## [213]     55.50     55.35     55.32     55.26
+## [217]     55.25     55.24     55.23     54.87
+## [221]     50.62     50.15     49.70     44.13
+## [225]     44.05     42.28     40.36     39.87
+## [229]     38.19     36.65     33.62     33.35
+## [233]     33.25     32.25     30.85     30.78
+## [237]     30.55     30.35     30.28     30.25
+## [241]     30.22     30.05     29.85     28.61
+## [245]     26.65     26.46     25.53     25.25
+## [249]     24.95     23.51     22.85     22.84
+## [253]     22.83     22.47     22.39     22.36
+## [257]     22.32     22.26     22.25     21.74
+## [261]     21.26     21.17     20.95     20.66
+## [265]     20.41     20.36     20.35     20.25
+## [269]     20.02     19.89     19.26     19.04
+## [273]     18.25     17.62     17.15     15.87
+## [277]     15.52     15.41     15.25     14.35
+## [281]     14.23     13.17     12.84     12.69
+## [285]     12.64     12.60     12.26     12.25
+## [289]     11.68     11.65     11.64     11.28
+## [293]     10.95     10.86     10.78     10.55
+## [297]     10.45     10.26     10.25     10.23
+## [301]     10.20      9.94      9.72      9.68
+## [305]      8.95      8.90      8.85      8.58
+## [309]      8.54      8.25      8.23      8.15
+## [313]      7.86      7.84      7.83      7.61
+## [317]      7.14      6.79      6.60      6.36
+## [321]      6.23      5.87      5.85      5.75
+## [325]      5.68      5.65      5.61      5.58
+## [329]      5.48      5.36      5.26      5.25
+## [333]      5.22      5.21      4.77      4.71
+## [337]      4.61      4.40      4.29      4.25
+## [341]      3.96      3.75      3.65      3.63
+## [345]      3.56      3.53      3.38      3.36
+## [349]      3.34      3.32      3.28      2.94
+## [353]      2.85      2.80      2.65      2.62
+## [357]      2.58      2.53      2.52      2.45
+## [361]      2.29      2.25      2.23      2.15
+## [365]      1.86      1.72      1.68      1.61
+## [369]      1.58      1.57      1.55      1.52
+## [373]      1.40      1.39      1.25      1.18
+## [377]      1.07      0.95      0.93      0.92
+## [381]      0.91      0.90      0.88      0.85
+## [385]      0.84      0.83      0.82      0.81
+## [389]      0.79      0.78      0.75      0.73
+## [393]      0.72      0.71      0.67      0.66
+## [397]      0.65      0.64      0.63      0.62
+## [401]      0.61      0.60      0.56      0.55
+## [405]      0.54      0.53      0.51      0.50
+## [409]      0.48      0.47      0.46      0.45
+## [413]      0.44      0.43      0.42      0.41
+## [417]      0.40      0.39      0.38      0.36
+## [421]      0.35      0.34      0.33      0.32
+## [425]      0.30      0.29      0.28      0.27
+## [429]      0.26      0.25      0.24      0.23
+## [433]      0.22      0.21      0.20      0.18
+## [437]      0.17      0.16      0.15      0.14
+## [441]      0.13      0.12      0.10      0.09
+## 
+## 
+## Slot &quot;fp&quot;:
+## [[1]]
+##   [1]   0   1   1   1   2   2   3   3   3   4   5
+##  [12]   6   6   7   7   7   7   7   8   9  10  11
+##  [23]  11  12  12  13  14  14  15  15  16  17  17
+##  [34]  18  19  20  21  21  21  21  22  22  22  23
+##  [45]  24  25  25  25  25  25  26  27  27  27  28
+##  [56]  28  28  29  29  30  31  32  33  34  35  36
+##  [67]  36  36  36  37  38  39  39  39  40  41  41
+##  [78]  41  42  43  43  43  44  44  45  45  46  47
+##  [89]  47  47  47  47  47  47  48  49  50  51  52
+## [100]  52  52  53  54  54  55  55  56  57  57  58
+## [111]  59  60  60  61  61  62  63  64  64  64  65
+## [122]  66  67  68  68  68  69  70  71  71  72  72
+## [133]  72  73  73  74  74  74  74  74  75  75  75
+## [144]  76  76  76  76  77  78  78  79  79  80  80
+## [155]  81  82  82  82  82  82  83  83  84  84  85
+## [166]  85  86  87  88  89  90  91  92  92  93  93
+## [177]  94  94  95  95  95  95  96  97  98  99  99
+## [188]  99 100 101 101 102 103 104 104 105 106 106
+## [199] 107 107 108 109 110 111 112 112 113 113 114
+## [210] 115 115 116 117 117 117 118 119 119 119 120
+## [221] 120 120 121 122 123 124 125 126 126 127 129
+## [232] 131 131 132 132 133 134 135 135 136 137 138
+## [243] 139 140 141 141 141 142 143 143 144 145 146
+## [254] 147 148 148 148 148 149 150 151 152 153 154
+## [265] 155 157 157 157 158 158 159 159 160 161 162
+## [276] 163 163 164 164 165 166 167 168 168 169 169
+## [287] 169 169 170 171 172 172 172 173 174 175 175
+## [298] 175 178 179 180 180 180 181 182 182 182 183
+## [309] 184 185 186 186 187 188 189 190 190 191 191
+## [320] 192 192 193 193 194 195 195 196 197 197 197
+## [331] 198 200 201 201 201 201 202 202 202 203 204
+## [342] 205 206 207 208 209 210 212 213 215 215 216
+## [353] 216 217 217 217 218 218 219 220 220 223 223
+## [364] 224 225 226 227 228 229 230 231 232 232 232
+## [375] 232 233 233 234 236 238 240 241 244 247 254
+## [386] 255 257 259 259 260 263 267 269 271 273 274
+## [397] 279 281 285 288 290 291 293 300 301 303 304
+## [408] 305 308 309 310 311 313 314 316 317 319 320
+## [419] 323 326 327 329 333 335 336 340 346 347 350
+## [430] 358 362 364 369 372 374 375 378 380 381 382
+## [441] 383 384 385 387
+## 
+## 
+## Slot &quot;tp&quot;:
+## [[1]]
+##   [1]   0   0   1   2   2   3   3   4   5   5   5
+##  [12]   5   6   6   7   8   9  10  10  10  10  10
+##  [23]  11  11  12  12  12  13  13  14  14  14  15
+##  [34]  15  15  15  15  16  17  18  18  19  20  20
+##  [45]  20  20  21  22  23  24  24  24  25  26  26
+##  [56]  27  28  28  29  29  29  29  29  29  29  29
+##  [67]  30  31  32  32  32  32  33  34  34  34  35
+##  [78]  36  36  36  37  38  38  39  39  40  40  40
+##  [89]  41  42  43  44  45  46  46  46  46  46  46
+## [100]  47  48  48  48  49  49  50  50  50  51  51
+## [111]  51  51  52  52  53  53  53  53  54  55  55
+## [122]  55  55  55  56  57  57  57  57  58  58  59
+## [133]  60  60  61  61  62  63  64  65  65  66  67
+## [144]  67  68  69  70  70  70  71  71  72  72  73
+## [155]  73  73  74  75  76  77  77  78  78  79  79
+## [166]  80  80  80  80  80  80  80  80  81  81  82
+## [177]  82  84  84  85  86  87  87  87  87  87  88
+## [188]  89  89  89  90  90  90  90  91  91  91  92
+## [199]  92  93  93  93  93  93  93  94  94  95  95
+## [210]  96  97  97  97  98  99  99  99 100 101 101
+## [221] 102 103 103 103 103 103 103 103 104 104 104
+## [232] 104 105 105 106 106 106 106 107 107 107 107
+## [243] 107 107 107 108 109 109 109 110 110 110 110
+## [254] 110 110 111 112 113 113 113 113 113 113 113
+## [265] 113 114 115 117 117 118 118 119 119 119 119
+## [276] 119 120 120 121 121 121 121 121 122 122 123
+## [287] 124 125 125 125 125 126 127 127 127 127 128
+## [298] 129 130 130 130 131 132 132 132 133 134 135
+## [309] 135 136 137 138 138 138 138 138 139 139 140
+## [320] 141 142 142 143 143 144 145 145 145 146 147
+## [331] 147 147 147 148 149 150 150 151 152 152 152
+## [342] 152 152 152 152 152 152 152 152 152 153 153
+## [353] 154 154 155 157 157 158 158 158 159 160 161
+## [364] 161 161 161 161 161 161 161 161 161 162 163
+## [375] 164 164 165 165 165 165 165 165 165 165 165
+## [386] 165 165 165 166 166 166 166 166 166 166 166
+## [397] 166 166 166 166 166 167 167 167 168 168 168
+## [408] 168 168 168 168 168 168 168 168 168 168 168
+## [419] 168 168 168 169 169 170 170 170 170 170 170
+## [430] 170 170 174 174 174 174 174 174 174 175 175
+## [441] 176 176 176 176
+## 
+## 
+## Slot &quot;tn&quot;:
+## [[1]]
+##   [1] 387 386 386 386 385 385 384 384 384 383 382
+##  [12] 381 381 380 380 380 380 380 379 378 377 376
+##  [23] 376 375 375 374 373 373 372 372 371 370 370
+##  [34] 369 368 367 366 366 366 366 365 365 365 364
+##  [45] 363 362 362 362 362 362 361 360 360 360 359
+##  [56] 359 359 358 358 357 356 355 354 353 352 351
+##  [67] 351 351 351 350 349 348 348 348 347 346 346
+##  [78] 346 345 344 344 344 343 343 342 342 341 340
+##  [89] 340 340 340 340 340 340 339 338 337 336 335
+## [100] 335 335 334 333 333 332 332 331 330 330 329
+## [111] 328 327 327 326 326 325 324 323 323 323 322
+## [122] 321 320 319 319 319 318 317 316 316 315 315
+## [133] 315 314 314 313 313 313 313 313 312 312 312
+## [144] 311 311 311 311 310 309 309 308 308 307 307
+## [155] 306 305 305 305 305 305 304 304 303 303 302
+## [166] 302 301 300 299 298 297 296 295 295 294 294
+## [177] 293 293 292 292 292 292 291 290 289 288 288
+## [188] 288 287 286 286 285 284 283 283 282 281 281
+## [199] 280 280 279 278 277 276 275 275 274 274 273
+## [210] 272 272 271 270 270 270 269 268 268 268 267
+## [221] 267 267 266 265 264 263 262 261 261 260 258
+## [232] 256 256 255 255 254 253 252 252 251 250 249
+## [243] 248 247 246 246 246 245 244 244 243 242 241
+## [254] 240 239 239 239 239 238 237 236 235 234 233
+## [265] 232 230 230 230 229 229 228 228 227 226 225
+## [276] 224 224 223 223 222 221 220 219 219 218 218
+## [287] 218 218 217 216 215 215 215 214 213 212 212
+## [298] 212 209 208 207 207 207 206 205 205 205 204
+## [309] 203 202 201 201 200 199 198 197 197 196 196
+## [320] 195 195 194 194 193 192 192 191 190 190 190
+## [331] 189 187 186 186 186 186 185 185 185 184 183
+## [342] 182 181 180 179 178 177 175 174 172 172 171
+## [353] 171 170 170 170 169 169 168 167 167 164 164
+## [364] 163 162 161 160 159 158 157 156 155 155 155
+## [375] 155 154 154 153 151 149 147 146 143 140 133
+## [386] 132 130 128 128 127 124 120 118 116 114 113
+## [397] 108 106 102  99  97  96  94  87  86  84  83
+## [408]  82  79  78  77  76  74  73  71  70  68  67
+## [419]  64  61  60  58  54  52  51  47  41  40  37
+## [430]  29  25  23  18  15  13  12   9   7   6   5
+## [441]   4   3   2   0
+## 
+## 
+## Slot &quot;fn&quot;:
+## [[1]]
+##   [1] 176 176 175 174 174 173 173 172 171 171 171
+##  [12] 171 170 170 169 168 167 166 166 166 166 166
+##  [23] 165 165 164 164 164 163 163 162 162 162 161
+##  [34] 161 161 161 161 160 159 158 158 157 156 156
+##  [45] 156 156 155 154 153 152 152 152 151 150 150
+##  [56] 149 148 148 147 147 147 147 147 147 147 147
+##  [67] 146 145 144 144 144 144 143 142 142 142 141
+##  [78] 140 140 140 139 138 138 137 137 136 136 136
+##  [89] 135 134 133 132 131 130 130 130 130 130 130
+## [100] 129 128 128 128 127 127 126 126 126 125 125
+## [111] 125 125 124 124 123 123 123 123 122 121 121
+## [122] 121 121 121 120 119 119 119 119 118 118 117
+## [133] 116 116 115 115 114 113 112 111 111 110 109
+## [144] 109 108 107 106 106 106 105 105 104 104 103
+## [155] 103 103 102 101 100  99  99  98  98  97  97
+## [166]  96  96  96  96  96  96  96  96  95  95  94
+## [177]  94  92  92  91  90  89  89  89  89  89  88
+## [188]  87  87  87  86  86  86  86  85  85  85  84
+## [199]  84  83  83  83  83  83  83  82  82  81  81
+## [210]  80  79  79  79  78  77  77  77  76  75  75
+## [221]  74  73  73  73  73  73  73  73  72  72  72
+## [232]  72  71  71  70  70  70  70  69  69  69  69
+## [243]  69  69  69  68  67  67  67  66  66  66  66
+## [254]  66  66  65  64  63  63  63  63  63  63  63
+## [265]  63  62  61  59  59  58  58  57  57  57  57
+## [276]  57  56  56  55  55  55  55  55  54  54  53
+## [287]  52  51  51  51  51  50  49  49  49  49  48
+## [298]  47  46  46  46  45  44  44  44  43  42  41
+## [309]  41  40  39  38  38  38  38  38  37  37  36
+## [320]  35  34  34  33  33  32  31  31  31  30  29
+## [331]  29  29  29  28  27  26  26  25  24  24  24
+## [342]  24  24  24  24  24  24  24  24  24  23  23
+## [353]  22  22  21  19  19  18  18  18  17  16  15
+## [364]  15  15  15  15  15  15  15  15  15  14  13
+## [375]  12  12  11  11  11  11  11  11  11  11  11
+## [386]  11  11  11  10  10  10  10  10  10  10  10
+## [397]  10  10  10  10  10   9   9   9   8   8   8
+## [408]   8   8   8   8   8   8   8   8   8   8   8
+## [419]   8   8   8   7   7   6   6   6   6   6   6
+## [430]   6   6   2   2   2   2   2   2   2   1   1
+## [441]   0   0   0   0
+## 
+## 
+## Slot &quot;n.pos&quot;:
+## [[1]]
+## [1] 176
+## 
+## 
+## Slot &quot;n.neg&quot;:
+## [[1]]
+## [1] 387
+## 
+## 
+## Slot &quot;n.pos.pred&quot;:
+## [[1]]
+##   [1]   0   1   2   3   4   5   6   7   8   9  10
+##  [12]  11  12  13  14  15  16  17  18  19  20  21
+##  [23]  22  23  24  25  26  27  28  29  30  31  32
+##  [34]  33  34  35  36  37  38  39  40  41  42  43
+##  [45]  44  45  46  47  48  49  50  51  52  53  54
+##  [56]  55  56  57  58  59  60  61  62  63  64  65
+##  [67]  66  67  68  69  70  71  72  73  74  75  76
+##  [78]  77  78  79  80  81  82  83  84  85  86  87
+##  [89]  88  89  90  91  92  93  94  95  96  97  98
+## [100]  99 100 101 102 103 104 105 106 107 108 109
+## [111] 110 111 112 113 114 115 116 117 118 119 120
+## [122] 121 122 123 124 125 126 127 128 129 130 131
+## [133] 132 133 134 135 136 137 138 139 140 141 142
+## [144] 143 144 145 146 147 148 149 150 151 152 153
+## [155] 154 155 156 157 158 159 160 161 162 163 164
+## [166] 165 166 167 168 169 170 171 172 173 174 175
+## [177] 176 178 179 180 181 182 183 184 185 186 187
+## [188] 188 189 190 191 192 193 194 195 196 197 198
+## [199] 199 200 201 202 203 204 205 206 207 208 209
+## [210] 211 212 213 214 215 216 217 218 219 220 221
+## [221] 222 223 224 225 226 227 228 229 230 231 233
+## [232] 235 236 237 238 239 240 241 242 243 244 245
+## [243] 246 247 248 249 250 251 252 253 254 255 256
+## [254] 257 258 259 260 261 262 263 264 265 266 267
+## [265] 268 271 272 274 275 276 277 278 279 280 281
+## [276] 282 283 284 285 286 287 288 289 290 291 292
+## [287] 293 294 295 296 297 298 299 300 301 302 303
+## [298] 304 308 309 310 311 312 313 314 315 316 318
+## [309] 319 321 323 324 325 326 327 328 329 330 331
+## [320] 333 334 335 336 337 339 340 341 342 343 344
+## [331] 345 347 348 349 350 351 352 353 354 355 356
+## [342] 357 358 359 360 361 362 364 365 367 368 369
+## [353] 370 371 372 374 375 376 377 378 379 383 384
+## [364] 385 386 387 388 389 390 391 392 393 394 395
+## [375] 396 397 398 399 401 403 405 406 409 412 419
+## [386] 420 422 424 425 426 429 433 435 437 439 440
+## [397] 445 447 451 454 456 458 460 467 469 471 472
+## [408] 473 476 477 478 479 481 482 484 485 487 488
+## [419] 491 494 495 498 502 505 506 510 516 517 520
+## [430] 528 532 538 543 546 548 549 552 554 556 557
+## [441] 559 560 561 563
+## 
+## 
+## Slot &quot;n.neg.pred&quot;:
+## [[1]]
+##   [1] 563 562 561 560 559 558 557 556 555 554 553
+##  [12] 552 551 550 549 548 547 546 545 544 543 542
+##  [23] 541 540 539 538 537 536 535 534 533 532 531
+##  [34] 530 529 528 527 526 525 524 523 522 521 520
+##  [45] 519 518 517 516 515 514 513 512 511 510 509
+##  [56] 508 507 506 505 504 503 502 501 500 499 498
+##  [67] 497 496 495 494 493 492 491 490 489 488 487
+##  [78] 486 485 484 483 482 481 480 479 478 477 476
+##  [89] 475 474 473 472 471 470 469 468 467 466 465
+## [100] 464 463 462 461 460 459 458 457 456 455 454
+## [111] 453 452 451 450 449 448 447 446 445 444 443
+## [122] 442 441 440 439 438 437 436 435 434 433 432
+## [133] 431 430 429 428 427 426 425 424 423 422 421
+## [144] 420 419 418 417 416 415 414 413 412 411 410
+## [155] 409 408 407 406 405 404 403 402 401 400 399
+## [166] 398 397 396 395 394 393 392 391 390 389 388
+## [177] 387 385 384 383 382 381 380 379 378 377 376
+## [188] 375 374 373 372 371 370 369 368 367 366 365
+## [199] 364 363 362 361 360 359 358 357 356 355 354
+## [210] 352 351 350 349 348 347 346 345 344 343 342
+## [221] 341 340 339 338 337 336 335 334 333 332 330
+## [232] 328 327 326 325 324 323 322 321 320 319 318
+## [243] 317 316 315 314 313 312 311 310 309 308 307
+## [254] 306 305 304 303 302 301 300 299 298 297 296
+## [265] 295 292 291 289 288 287 286 285 284 283 282
+## [276] 281 280 279 278 277 276 275 274 273 272 271
+## [287] 270 269 268 267 266 265 264 263 262 261 260
+## [298] 259 255 254 253 252 251 250 249 248 247 245
+## [309] 244 242 240 239 238 237 236 235 234 233 232
+## [320] 230 229 228 227 226 224 223 222 221 220 219
+## [331] 218 216 215 214 213 212 211 210 209 208 207
+## [342] 206 205 204 203 202 201 199 198 196 195 194
+## [353] 193 192 191 189 188 187 186 185 184 180 179
+## [364] 178 177 176 175 174 173 172 171 170 169 168
+## [375] 167 166 165 164 162 160 158 157 154 151 144
+## [386] 143 141 139 138 137 134 130 128 126 124 123
+## [397] 118 116 112 109 107 105 103  96  94  92  91
+## [408]  90  87  86  85  84  82  81  79  78  76  75
+## [419]  72  69  68  65  61  58  57  53  47  46  43
+## [430]  35  31  25  20  17  15  14  11   9   7   6
+## [441]   4   3   2   0
+</code></pre>
+
+<pre><code class="r">perf1 &lt;- performance(pred1, &quot;tpr&quot;, &quot;fpr&quot;)
+perf2 &lt;- performance(pred2, &quot;tpr&quot;, &quot;fpr&quot;)
+
+plot(perf1, col = &quot;blue&quot;)
+plot(perf2, col = &quot;red&quot;, add = TRUE)
+abline(a = 0, b = 1, col = &quot;gray&quot;)
+legend(&quot;bottomright&quot;, legend = c(&quot;mRNA&quot;, &quot;dna&quot;), lty = 1, 
+    col = c(&quot;blue&quot;, &quot;red&quot;))
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-2"/></p>
+
+<pre><code class="r">auc1 &lt;- performance(pred1, &quot;auc&quot;)
+auc1
+</code></pre>
+
+<pre><code>## An object of class &quot;performance&quot;
+## Slot &quot;x.name&quot;:
+## [1] &quot;None&quot;
+## 
+## Slot &quot;y.name&quot;:
+## [1] &quot;Area under the ROC curve&quot;
+## 
+## Slot &quot;alpha.name&quot;:
+## [1] &quot;none&quot;
+## 
+## Slot &quot;x.values&quot;:
+## list()
+## 
+## Slot &quot;y.values&quot;:
+## [[1]]
+## [1] 0.8005564
+## 
+## 
+## Slot &quot;alpha.values&quot;:
+## list()
+</code></pre>
+
+<pre><code class="r">auc2 &lt;- performance(pred2, &quot;auc&quot;)
+auc2
+</code></pre>
+
+<pre><code>## An object of class &quot;performance&quot;
+## Slot &quot;x.name&quot;:
+## [1] &quot;None&quot;
+## 
+## Slot &quot;y.name&quot;:
+## [1] &quot;Area under the ROC curve&quot;
+## 
+## Slot &quot;alpha.name&quot;:
+## [1] &quot;none&quot;
+## 
+## Slot &quot;x.values&quot;:
+## list()
+## 
+## Slot &quot;y.values&quot;:
+## [[1]]
+## [1] 0.6902308
+## 
+## 
+## Slot &quot;alpha.values&quot;:
+## list()
+</code></pre>
+
+<h2>联合诊断AUC</h2>
+
+<h4>背景</h4>
+
+<p>诊断试验统是临床研究的重要类别，对于诊断指标是连续型变量的诊断效能评价需要采用ROC分析。使用ROC分析评价单个诊断型连续指标的方法使用统计软件实现较为方便。比如，我们现在评估类风湿因子(RF)用于诊断系统性红斑狼疮(SLE)，把类风湿因子做为待评价诊断指标，把SLE的确诊结果作为参考标准或金标准(SLE的诊断往往是临床诊断，此处的金标准即是当前国际公认的SLE最权威诊断标准)，即可做ROC分析，找到最佳Cut-off值，并可以在此Cut-off值下计算敏感度特异度等统计指标。</p>
+
+<p>在临床工作中，我们遇到的问题往往比这要复杂，大多数疾病的诊断并非依靠单一诊断指标，我们往往需要检测不同指标后才能做出诊断。比如，对于SLE的诊断，我们需要检测多个生化或免疫指标，并结合影像学检查与临床症状和体征做出诊断。实际临床实践中，联合诊断的情况更为常见。所谓联合诊断，是一种串联形式的诊断试验设计，即多个诊断指标阳性，患者患病的可能性更高。</p>
+
+<p>下面笔者提几个问题供大家思考：</p>
+
+<ul>
+<li><p>什么情况下才需要联合不同的诊断指标？ </p></li>
+<li><p>如何确定联合多个诊断指标的诊断效能？</p></li>
+<li><p>如何评价不同诊断指标联合方式的优劣？</p></li>
+</ul>
+
+<p>针对第一个问题，如果单一指标的诊断效能不高，比如ROC曲线下面积AUC低于0.8，或者即便高于0.8，但临床有更高诊断效能的需求，都可以进行联合诊断。</p>
+
+<p>针对第二个问题，需要计算多个诊断指标联合的参数，一般是以参考标准的诊断结果为因变量，以待评价指标为自变量，构建Logistic回归，并计算每个对象对应的预测概率，以预测概率进行ROC分析，计算曲线下面积AUC。</p>
+
+<p>针对第三个问题，比较不同联合诊断方式的ROC曲线下面积即可。</p>
+
+<p>下面我们以一个模拟的案例，为大家讲解联合诊断ROC分析统计软件实现及结果解读。</p>
+
+<pre><code class="r">fit1 &lt;- glm(oncology ~ mRNA + dna, family = binomial(), 
+    data = example21_3)
+summary(fit1)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## glm(formula = oncology ~ mRNA + dna, family = binomial(), data = example21_3)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4502  -0.8104  -0.8099   1.4643   1.5980  
+## 
+## Coefficients:
+##               Estimate Std. Error z value
+## (Intercept) -9.486e-01  9.963e-02  -9.521
+## mRNA         3.857e-03  1.018e-03   3.790
+## dna         -1.264e-05  3.086e-05  -0.410
+##             Pr(&gt;|z|)    
+## (Intercept)  &lt; 2e-16 ***
+## mRNA        0.000151 ***
+## dna         0.682167    
+## ---
+## Signif. codes:  
+## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 699.44  on 562  degrees of freedom
+## Residual deviance: 670.47  on 560  degrees of freedom
+## AIC: 676.47
+## 
+## Number of Fisher Scoring iterations: 5
+</code></pre>
+
+<pre><code class="r">example21_3$predvalue &lt;- predict(fit1, type = &quot;response&quot;)
+
+pred &lt;- prediction(example21_3$predvalue, example21_3$oncology)
+perf &lt;- performance(pred, &quot;tpr&quot;, &quot;fpr&quot;)
+plot(perf)
+abline(0, 1)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-3"/></p>
+
+<pre><code class="r">auc &lt;- performance(pred, &quot;auc&quot;)
+auc  #auc即是C-statistics
+</code></pre>
+
+<pre><code>## An object of class &quot;performance&quot;
+## Slot &quot;x.name&quot;:
+## [1] &quot;None&quot;
+## 
+## Slot &quot;y.name&quot;:
+## [1] &quot;Area under the ROC curve&quot;
+## 
+## Slot &quot;alpha.name&quot;:
+## [1] &quot;none&quot;
+## 
+## Slot &quot;x.values&quot;:
+## list()
+## 
+## Slot &quot;y.values&quot;:
+## [[1]]
+## [1] 0.7979064
+## 
+## 
+## Slot &quot;alpha.values&quot;:
+## list()
+</code></pre>
+
+</body>
+
+</html>
